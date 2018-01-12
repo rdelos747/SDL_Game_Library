@@ -118,7 +118,7 @@ void myObject::keyUp(int k) {
 ## OBJECT CLASS
 The Object class is what your custom game classes extend in order to interact properly with SDL and the game loop.
 
-#### OBJECT CLASS MEMBER VARS
+### OBJECT CLASS MEMBER VARS
 
 **x**
 - Type float. Initial 0.
@@ -146,7 +146,7 @@ The Object class is what your custom game classes extend in order to interact pr
 - Type int. Initial 0.
 - Index of Sprite in sprites that will be rendered by Object's render method. 
 
-#### OBJECT CLASS METHODS
+### OBJECT CLASS METHODS
 - Of course, your custom classes need constructors and destructors, but the parent Object class handles the majority of intialization for you. See 'simple example' for reference.
 
 **update()**
