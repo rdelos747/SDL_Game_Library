@@ -77,11 +77,14 @@ my_object::my_object() {
 ### RUNNING THE GAME
 
 **SDL_INIT()**
+
  Loads up SDL
 
 **SDL_CLOSE()**
+
  Cleans up user-created objects and sprites. Quits SDL and SDL subsystems.
 
 GAME_UPDATE()**
+
  Main game loop. Issues key events, Object updates, and Sprite rendering.
 
