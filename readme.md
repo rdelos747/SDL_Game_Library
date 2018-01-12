@@ -47,7 +47,7 @@ Your main.cpp must #include FUNCTIONS.h, and first call SDL_INIT(), then call GA
 #ifndef MYOBJECT_H
 #define MYOBJECT_H
 
-#include "../../SDL_LIBRARY/FUNCTIONS/FUNCTIONS.h"
+#include "path/to/SDL_LIBRARY/FUNCTIONS/FUNCTIONS.h"
 
 class myObject:public Object {
 public:
@@ -98,7 +98,7 @@ void myObject::keyUp(int k) {
 
 # API REFERENCE
 
-### RUNNING THE GAME
+## RUNNING THE GAME
 
 **SDL_INIT()**
 - Loads up SDL
@@ -109,7 +109,8 @@ void myObject::keyUp(int k) {
 **GAME_UPDATE()**
 - Main game loop. Issues key events, Object updates, and Sprite rendering.
 
-### OBJECT CLASS
+
+## OBJECT CLASS
 The Object class is what your custom game classes extend in order to interact properly with SDL.
 
 #### OBJECT CLASS MEMBER VARS
