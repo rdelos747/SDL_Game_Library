@@ -1,8 +1,10 @@
 ## SDL GAME LIBRARY
 
-This library contains wrapper functions/ classes for SDL, aimed at making cross-platform game development in C++ a little bit easier. Note: this project is in the very early stages of development and will probably look very different over the coming months (maybe years???)
+This library contains wrapper functions/ classes for SDL, aimed at making cross-platform game development in C++ a little bit easier. 
 
-# INSTALLATION
+Note: this project is in the very early stages of development and will probably look very different over the coming months (maybe years???)
+
+## INSTALLATION
 
 1. Install SDL2 and SDL_IMAGE frameworks to your machine. 
 2. Include SDL_LIBRARY/FUNCTIONS in your project directory.
@@ -10,7 +12,11 @@ This library contains wrapper functions/ classes for SDL, aimed at making cross-
 
 ## MAIN EXAMPLE
 
-FUNCTIONS.h contains all necessary includes and code to get stated. bullet.h and ship.h are custom user-made classed for the specific game. Below is an example of a user's main.cpp:
+FUNCTIONS.h contains all necessary includes and code to get stated. 
+
+bullet.h and ship.h are custom user-made classed for the specific game. 
+
+Below is an example of a user's main.cpp:
 
 ```c++
 // main.cpp
@@ -70,6 +76,14 @@ my_object::my_object {
 
 # API REFERENCE
 
+**RUNNING THE GAME**
 
+### SDL_INIT()
+Loads up SDL
 
-**FUNCTIONS.h**
+### SDL_CLOSE()
+Cleans up user-created objects and sprites. Quits SDL and SDL subsystems.
+
+## GAME_UPDATE()
+Main game loop. Issues key events, Object updates, and Sprite rendering.
+
