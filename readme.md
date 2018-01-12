@@ -110,6 +110,16 @@ void myObject::keyUp(int k) {
 **GAME_UPDATE()**
 - Main game loop. Issues key events, Object updates, and Sprite rendering.
 
+**SCREEN_WIDTH**
+- Type: const int. Initial 640.
+- Width of screen.
+- TODO: Add way for user to change this on init.
+
+**SCREEN_HEIGHT**
+- Type: const int. Initial 480.
+- Height of screen.
+- TODO: Add way for user to change this on init.
+
 **OBJECTS**
 - Type: std::vector<Object*>. Intial [].
 - Usage: OBJECTS.push_back(myObjectPointer)
@@ -119,6 +129,10 @@ void myObject::keyUp(int k) {
 The Object class is what your custom game classes extend in order to interact properly with SDL and the game loop.
 
 ### OBJECT CLASS MEMBER VARS
+
+**ID**
+- Type int (const?). Initial 0.
+- Unique ID of parent Object, set during parent construction.
 
 **x**
 - Type float. Initial 0.
@@ -150,11 +164,11 @@ The Object class is what your custom game classes extend in order to interact pr
 - Of course, your custom classes need constructors and destructors, but the parent Object class handles the majority of intialization for you. See 'simple example' for reference.
 
 **update()**
-- Type: virtual void. Params: None.
+- Type virtual void. Params None.
 - Child class overrides this. 
 
 **keyDown(int k)**
-- Type: virtual void. Params: int.
+- Type virtual void. Params int.
 - Called from GAME_UPDATE loop.
 - Child class overrides this to add key down functionality.
 - See SDL manual for list of key codes.
@@ -170,7 +184,7 @@ void myObject::keyDown(int k) {
 ```
 
 **keyUP(int k)**
-- Type: virtual void. Params: int.
+- Type virtual void. Params int.
 - Called from GAME_UPDATE loop.
 - Child class overrides this to add key up functionality.
 - See SDL manual for list of key codes.
@@ -184,3 +198,37 @@ void myObject::keyUp(int k) {
 	}
 }
 ```
+
+**selfDestroy()**
+Type void. Params none.
+- Destroys Object.
+```c++
+void myObject::update() {
+	if (x > SCREEN_WIDTH) {
+		selfDestroy();
+	}
+}
+```
+
+**addSprite(std::string path)**
+Type void. Params std::string
+- Adds Sprite to sprites vector.
+- TODO: Perhaps make this return t/f incase adding sprite fails.
+
+**nextSprite()**
+Type void. Params none.
+- Increments activeSprite by 1. This causes next Sprite in sprites vector to be rendered.
+- If activeSprite is at end of sprites vector, activeSprite will reset to 0 if nextSprite() is called.
+
+**prevSprite()**
+Type void. Params none.
+- Decrements activeSprite by 1. This causes previous Sprite in sprites vector to be rendered.
+- If activeSprite is at 0, activeSprite will set to sprites.size() - 1 if prevSprite() is called.
+
+**getActiveSpriteWidth()**
+Type int. Params one.
+- Returns width of active sprite.
+
+**getActiveSpriteHeight()**
+Type int. Params one.
+- Returns height of active sprite.
