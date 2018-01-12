@@ -1,4 +1,4 @@
-## SDL GAME LIBRARY
+# SDL GAME LIBRARY
 
 This library contains wrapper functions/ classes for SDL, aimed at making cross-platform game development in C++ a little bit easier. 
 
@@ -66,24 +66,22 @@ private:
 **ADDING A SPRITE TO YOUR OBJECT**
 ```c++
 // my_object.cpp
-my_object::my_object {
+my_object::my_object() {
 	// whatever intitialization you like...
 	addSprite("path/to/sprite.png");
 }
 ```
 
-
-
 # API REFERENCE
 
-**RUNNING THE GAME**
+### RUNNING THE GAME
 
-### SDL_INIT()
-Loads up SDL
+**SDL_INIT()**
+⋅⋅⋅Loads up SDL
 
-### SDL_CLOSE()
-Cleans up user-created objects and sprites. Quits SDL and SDL subsystems.
+**SDL_CLOSE()**
+⋅⋅⋅Cleans up user-created objects and sprites. Quits SDL and SDL subsystems.
 
-## GAME_UPDATE()
-Main game loop. Issues key events, Object updates, and Sprite rendering.
+**GAME_UPDATE()**
+⋅⋅⋅Main game loop. Issues key events, Object updates, and Sprite rendering.
 
