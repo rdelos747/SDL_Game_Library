@@ -7,7 +7,7 @@ This library contains wrapper functions/ classes for SDL, aimed at making cross-
 FUNCTIONS.h contains all necessary includes and code to get stated. 
 bullet.h and ship.h are custom user-made classed for the specific game.
 
-'''c++
+```c++
 #include "../SDL_LIBRARY/FUNCTIONS/FUNCTIONS.h"
 #include "CLASSES/bullet.h"
 #include "CLASSES/ship.h"
@@ -28,4 +28,4 @@ int main(int argc, char* args[]) {
 	SDL_CLOSE();
 	return 0;
 }
-'''
+```
