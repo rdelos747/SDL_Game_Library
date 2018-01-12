@@ -51,6 +51,7 @@ Your main.cpp must #include FUNCTIONS.h, and first call SDL_INIT(), then call GA
 
 class myObject:public Object {
 public:
+	// Object parent class does much initialization for you (eg setting x = 0, direction = 0, etc...)
 	myObject();
 	~myObject();
 	// below are virtual Object methods the child can override
@@ -109,9 +110,13 @@ void myObject::keyUp(int k) {
 **GAME_UPDATE()**
 - Main game loop. Issues key events, Object updates, and Sprite rendering.
 
+**OBJECTS**
+- Type: std::vector<Object*>. Intial [].
+- Usage: OBJECTS.push_back(myObjectPointer)
+- Custom objects must be added to OBJECTS vector, so that the main loop (GAME_UPDATE) knows which objects to update and render.
 
 ## OBJECT CLASS
-The Object class is what your custom game classes extend in order to interact properly with SDL.
+The Object class is what your custom game classes extend in order to interact properly with SDL and the game loop.
 
 #### OBJECT CLASS MEMBER VARS
 
@@ -135,8 +140,47 @@ The Object class is what your custom game classes extend in order to interact pr
 **sprites**
 - Type std::vector<Sprite*>. Initial [].
 - Vector of Sprite pointers. An Object can contain however many Sprites necessary (perhaps for different visual states, animations, etc...).
+- TODO: consider making this private, so child object cannot directly interact with this vector. Child should interact using getters/ setters.
 
 **activeSprite**
 - Type int. Initial 0.
 - Index of Sprite in sprites that will be rendered by Object's render method. 
 
+#### OBJECT CLASS METHODS
+- Of course, your custom classes need constructors and destructors, but the parent Object class handles the majority of intialization for you. See 'simple example' for reference.
+
+**update()**
+- Type: virtual void. Params: None.
+- Child class overrides this. 
+
+**keyDown(int k)**
+- Type: virtual void. Params: int.
+- Called from GAME_UPDATE loop.
+- Child class overrides this to add key down functionality.
+- See SDL manual for list of key codes.
+```c++
+void myObject::keyDown(int k) {
+	switch(k) {
+		case SDLK_RIGHT: foo(); break;
+		case SDLK_LEFT: bar(); break;
+		case SDLK_UP: direction++; break;
+		case SDLK_SPACE: x = 6;
+	}
+}
+```
+
+**keyUP(int k)**
+- Type: virtual void. Params: int.
+- Called from GAME_UPDATE loop.
+- Child class overrides this to add key up functionality.
+- See SDL manual for list of key codes.
+
+```c++
+void myObject::keyUp(int k) {
+	switch(k) {
+		case SDLK_RIGHT: bar(); break;
+		case SDLK_LEFT: foo(); break;
+		case SDLK_UP: direction--; break;
+	}
+}
+```
