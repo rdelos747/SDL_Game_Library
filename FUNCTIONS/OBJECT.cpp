@@ -8,17 +8,19 @@
 // CONSTRUCTOR
 // ////////////////////////////////////////////////////////////////
 
-Object::Object() {
+Object::Object() : sprites() {
+	//sprites.reserve(10);
 	destroy = false;
 	ID = currentID++;
-	printf(" --OBJECT CONSTRUCTOR %d\n", ID);
+	collisionLayer = 0;
+	//printf(" --OBJECT CONSTRUCTOR %d\n", ID);
 	x = 0;
 	y = 0;
 	direction = 0;
 	center.x = 0;
 	center.y = 0;
 	activeSprite = 0;
-	sprites.clear();
+	//sprites.clear();
 }
 
 // /////////////////////////////////
@@ -26,10 +28,11 @@ Object::Object() {
 // ////////////////////////////////////////////////////////////////
 
 Object::~Object() {
-	printf(" --OBJECT DESTRUCTOR %d\n", ID);
+	//printf(" --OBJECT DESTRUCTOR %d\n", ID);
 	x = 0;
 	y = 0;
 	ID = 0;
+	collisionLayer = 0;
 	direction = 0;
 	activeSprite = 0;
 	center.x = 0;
@@ -53,9 +56,16 @@ void Object::keyUp(int k) {}
 // ////////////////////////////////////////////////////////////////
 
 void Object::render() {
+	//printf("rendering obj %d %d\n", ID, sprites[activeSprite]->getID());
+	//printf("rendering obj\n");
+	//printf(" %d %d\n", ID, sprites[activeSprite]->getID());
 	float renderX = x - center.x;
 	float renderY = y - center.y;
-	sprites[activeSprite]->render(renderX, renderY, NULL, direction, NULL);
+	if (activeSprite < sprites.size()) {
+		if (sprites[activeSprite]->texture != NULL) {
+			sprites[activeSprite]->render(renderX, renderY, NULL, direction, NULL);
+		}
+	}
 }
 
 // /////////////////////////////////
@@ -71,6 +81,28 @@ bool Object::isDestroyed() {
 }
 
 // /////////////////////////////////
+// OBJECT FUNCTIONS (called by everyone)
+// ////////////////////////////////////////////////////////////////
+int Object::getCollisionLayer() {
+	return collisionLayer;
+}
+
+
+bool Object::pointInsideBounds(float pointX, float pointY) {
+	bool collisionDetected = false;
+	float myLeft = x - center.x;
+	float myRight = x + center.x;
+	float myTop = y - center.y;
+	float myBottom = y + center.y;
+
+	if (pointX >= myLeft && pointX <= myRight && pointY >= myTop && pointY <= myBottom) {
+		collisionDetected = true;
+	}
+	
+	return collisionDetected;
+}
+
+// /////////////////////////////////
 // SPRITE FUNCTIONS (called by child)
 // ////////////////////////////////////////////////////////////////
 
@@ -78,9 +110,13 @@ void Object::addSprite(std::string path) {
 	Sprite* s = new Sprite;
 	if(!s->loadFromFile(path)) {
 		printf("Could not load sprite\n");
+		errorFound = 1;
 	} else {
+		//printf("doing sprite push back\n");
+		//printf("--num sprites: %lu\n", sprites.size());
 		sprites.push_back(s);
 	}
+	//printf("finished add sprite\n");
 }
 
 void Object::nextSprite() {

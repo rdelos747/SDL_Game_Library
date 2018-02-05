@@ -18,14 +18,17 @@
 
 #define PI 3.14159265
 
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
+//const int SCREEN_WIDTH = 640;
+//const int SCREEN_HEIGHT = 480;
+extern int SCREEN_WIDTH;
+extern int SCREEN_HEIGHT;
 
 extern SDL_Window* WINDOW;
 extern SDL_Renderer* RENDERER;
 
 class Object;
 extern int currentID;
+extern int errorFound;
 extern std::vector<Object*> OBJECTS;
 //extern int NEXT_ID;
 
@@ -33,8 +36,16 @@ extern std::vector<Object*> OBJECTS;
 // F U N C T I O N S
 // ////////////////////////////////////////////////////////////////
 
-bool SDL_INIT();
+// ENGINE
+bool SDL_INIT(int newScreenWidth = 640, int newScreenHeight = 480);
 void SDL_CLOSE();
-void GAME_UPDATE();
+bool GAME_UPDATE();
+
+// HELPERS
+int RAND_INT(int max);
+int RAND_INT_RANGE(int min, int max);
+
+// COLLISONS
+Object* COLLISION_AT_POINT(float newX, float newY, int layer = 0);
 
 #endif

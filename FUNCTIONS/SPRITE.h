@@ -13,6 +13,8 @@ public:
 	~Sprite();
 	bool loadFromFile(std::string path);
 
+	SDL_Texture* texture;
+
 	void freeSprite();
 
 	void render( int x, int y, SDL_Rect* clip = NULL, double angle = 0.0, SDL_Point* center = NULL, SDL_RendererFlip flip = SDL_FLIP_NONE );
@@ -22,7 +24,7 @@ public:
 	int getID();
 
 private:
-	SDL_Texture* texture;
+	
 	int ID;
 	int spriteWidth;
 	int spriteHeight;

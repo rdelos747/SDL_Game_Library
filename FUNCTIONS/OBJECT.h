@@ -29,6 +29,8 @@ public:
 	int getActiveSpriteHeight();
 	void selfDestroy();
 	bool isDestroyed();
+	int getCollisionLayer();
+	bool pointInsideBounds(float pointX, float pointY);
 
 private:
 	bool destroy;
@@ -36,6 +38,7 @@ private:
 protected:
 	//OBJECT VARS
 	int ID;
+	int collisionLayer;
 
 	//SPRITE VARS
 	std::vector<Sprite*> sprites;

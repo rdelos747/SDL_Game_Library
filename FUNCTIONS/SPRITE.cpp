@@ -29,7 +29,7 @@ bool Sprite::loadFromFile(std::string path) {
 		printf("Unable to load image %s! SDL_image Error: %s\n", path.c_str(), IMG_GetError());
 	} else {
 		//Color key image (black)
-		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0xFF, 0xFF));
+		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0, 0));
 
 		//Create texture from surface pixels
         newTexture = SDL_CreateTextureFromSurface(RENDERER, loadedSurface);
@@ -53,14 +53,15 @@ bool Sprite::loadFromFile(std::string path) {
 void Sprite::freeSprite()
 {
 	//Free texture if it exists
-	printf("   --in sprite free ID: %d\n", ID);
+	//printf("   --in sprite free ID: %d\n", ID);
 	if( texture != NULL )
 	{
+		//printf("trying to free sprite?\n");
 		SDL_DestroyTexture( texture );
 		texture = NULL;
 		spriteWidth = 0;
 		spriteHeight = 0;
-		printf("   --freeing sprite ID: %d\n", ID);
+		//printf("   --freeing sprite ID: %d\n", ID);
 		ID = 0;
 	}
 }

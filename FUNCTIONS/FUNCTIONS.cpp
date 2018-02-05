@@ -11,8 +11,12 @@
 SDL_Window* WINDOW = NULL;				// Window Object
 SDL_Renderer* RENDERER = NULL;			// Render Object
 
+int SCREEN_WIDTH = 0;
+int SCREEN_HEIGHT = 0;
+
 //GAME VARS
 int currentID = 0;						// Each Object and Sprite are given a unique ID
+int errorFound = 0;						// 0 if no errors, perhaps assign number to different errors
 std::vector<Object*> OBJECTS;			// Container of Objects
 bool GAME_RUNNING = true;				// Game running flag
 SDL_Event GAME_EVENT;					// Used for Key events
@@ -21,7 +25,9 @@ SDL_Event GAME_EVENT;					// Used for Key events
 // F U N C T I O N S
 // ////////////////////////////////////////////////////////////////
 
-bool SDL_INIT() {
+bool SDL_INIT(int newScreenWidth, int newScreenHeight) {
+	SCREEN_WIDTH = newScreenWidth;
+	SCREEN_HEIGHT = newScreenHeight;
 	//Initialization flag
 	bool success = true;
 	printf("=============================\n");
@@ -87,8 +93,8 @@ void SDL_CLOSE() {
 	SDL_Quit();
 }
 
-void GAME_UPDATE() {
-	while (GAME_RUNNING) {
+bool GAME_UPDATE() {
+	if (GAME_RUNNING) {
 		while(SDL_PollEvent(&GAME_EVENT) != 0) {
 			if (GAME_EVENT.type == SDL_QUIT) {
 				GAME_RUNNING = false;
@@ -110,18 +116,61 @@ void GAME_UPDATE() {
 		SDL_SetRenderDrawColor(RENDERER, 0x00, 0x00, 0x00, 0xFF);
 		SDL_RenderClear(RENDERER);
 
+		/*
+			Change render order
+			1. user input
+			2. update objects that get input
+			3. other objects
+			4. rendering all objects
+		*/
+
+		// Perhaps check for errors here too?
+
 		// handle object updates
-		// handle object renders
 		for (int i = 0; i < OBJECTS.size(); i++) {
 			if (OBJECTS[i]->isDestroyed() == true) {
 				delete OBJECTS[i];
 				OBJECTS.erase(OBJECTS.begin() + i);
 			} else {
 				OBJECTS[i]->update();
-				OBJECTS[i]->render();
 			}
 		}
 
+		// Check for errors before rendering
+		if (errorFound != 0) {
+			return false;
+		}
+
+		// handle object renders
+		for (int i = 0; i < OBJECTS.size(); i++) {
+			OBJECTS[i]->render();
+		}
+
 		SDL_RenderPresent( RENDERER );
+		return true;
+	} else {
+		return false;
 	}
+}
+
+int RAND_INT(int max) {
+	return rand() % (max + 1);
+}
+
+int RAND_INT_RANGE(int min, int max) {
+	return rand() % (max + 1) + min;
+}
+
+
+Object* COLLISION_AT_POINT(float newX, float newY, int layer) {
+	Object* foundObject = NULL;
+	for (int i = 0; i < OBJECTS.size(); i++) {
+		if (OBJECTS[i]->getCollisionLayer() == layer) {
+			if (OBJECTS[i]->pointInsideBounds(newX, newY) == true) {
+				//printf("collide\n");
+				foundObject = OBJECTS[i];
+			}
+		}
+	}
+	return foundObject;
 }
