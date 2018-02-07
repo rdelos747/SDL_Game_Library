@@ -9,18 +9,22 @@
 // ////////////////////////////////////////////////////////////////
 
 Object::Object() : sprites() {
-	//sprites.reserve(10);
+	//printf(" --OBJECT CONSTRUCTOR %d\n", ID);
+
+	// OBJECT VARS
 	destroy = false;
 	ID = currentID++;
 	collisionLayer = 0;
-	//printf(" --OBJECT CONSTRUCTOR %d\n", ID);
 	x = 0;
 	y = 0;
 	direction = 0;
 	center.x = 0;
 	center.y = 0;
+
+	// SPRITE VARS
 	activeSprite = 0;
-	//sprites.clear();
+	text = NULL;
+	visible = true;
 }
 
 // /////////////////////////////////
@@ -41,6 +45,10 @@ Object::~Object() {
 		delete sprites[i];
 	}
 	sprites.clear();
+	if (text != NULL) {
+		text->freeText();
+		text = NULL;
+	}
 }
 
 // /////////////////////////////////
@@ -56,14 +64,18 @@ void Object::keyUp(int k) {}
 // ////////////////////////////////////////////////////////////////
 
 void Object::render() {
-	//printf("rendering obj %d %d\n", ID, sprites[activeSprite]->getID());
-	//printf("rendering obj\n");
-	//printf(" %d %d\n", ID, sprites[activeSprite]->getID());
-	float renderX = x - center.x;
-	float renderY = y - center.y;
-	if (activeSprite < sprites.size()) {
-		if (sprites[activeSprite]->texture != NULL) {
-			sprites[activeSprite]->render(renderX, renderY, NULL, direction, NULL);
+	if (visible == true) {
+		float renderX = x - center.x;
+		float renderY = y - center.y;
+		if (activeSprite < sprites.size()) {
+			if (sprites[activeSprite]->texture != NULL) {
+				sprites[activeSprite]->render(renderX, renderY, NULL, direction, NULL);
+			}
+		}
+		if (text != NULL) {
+			if (text->texture != NULL & text->font != NULL) {
+				text->render(x, y, NULL, direction, NULL);
+			}
 		}
 	}
 }
@@ -112,11 +124,61 @@ void Object::addSprite(std::string path) {
 		printf("Could not load sprite\n");
 		errorFound = 1;
 	} else {
-		//printf("doing sprite push back\n");
-		//printf("--num sprites: %lu\n", sprites.size());
 		sprites.push_back(s);
 	}
-	//printf("finished add sprite\n");
+}
+
+void Object::setTextFont(std::string path, int size) {
+	Text* t = new Text;
+	t->font = TTF_OpenFont(path.c_str(), size);
+	if (t->font == NULL) {
+		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+        errorFound = 1;
+	} else {
+		text = t;
+	}
+}
+
+void Object::setTextValue(std::string value, SDL_Color color) {
+	if (text == NULL) {
+		printf("Cannot set text value, object->text = NULL. Must first create text item with setTextFont()\n");
+		errorFound = 1;
+	} else if (text->font == NULL) {
+		printf("Cannot set text value, object->text->font = NULL. Must first create text item with setTextFont()\n");
+		errorFound = 1;
+	} else {
+		if (!text->loadFromRenderedText(value, color)) {
+			printf( "Failed to render text texture!\n" );
+			errorFound = 1;
+		}
+	}
+}
+
+void Object::setTextValue(int value, SDL_Color color) {
+	if (text == NULL) {
+		printf("Cannot set text value, object->text = NULL. Must first create text item with setTextFont()\n");
+		errorFound = 1;
+	} else if (text->font == NULL) {
+		printf("Cannot set text value, object->text->font = NULL. Must first create text item with setTextFont()\n");
+		errorFound = 1;
+	} else {
+		if (!text->loadFromRenderedText(std::to_string(value), color)) {
+			printf( "Failed to render text texture!\n" );
+			errorFound = 1;
+		}
+	}
+}
+
+void Object::showSprite() {
+	visible = true;
+}
+
+void Object::hideSprite() {
+	visible = false;
+}
+
+bool Object::isVisible() {
+	return visible;
 }
 
 void Object::nextSprite() {

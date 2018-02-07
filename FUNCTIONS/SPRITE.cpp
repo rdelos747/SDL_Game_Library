@@ -62,7 +62,6 @@ void Sprite::freeSprite()
 		spriteWidth = 0;
 		spriteHeight = 0;
 		//printf("   --freeing sprite ID: %d\n", ID);
-		ID = 0;
 	}
 }
 

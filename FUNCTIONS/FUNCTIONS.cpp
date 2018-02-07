@@ -64,6 +64,10 @@ bool SDL_INIT(int newScreenWidth, int newScreenHeight) {
 					printf( "SDL_image could not initialize! SDL_image Error: %s\n", IMG_GetError() );
 					success = false;
 				}
+				if( TTF_Init() == -1 ) {
+                    printf( "SDL_ttf could not initialize! SDL_ttf Error: %s\n", TTF_GetError() );
+                    success = false;
+                }
 			}
 		}
 	}
@@ -75,6 +79,7 @@ void SDL_CLOSE() {
 	printf("CLOSING LIBRARY\n");
 	printf("--deleting objects: %lu\n", OBJECTS.size());
 	for (int i = 0; i < OBJECTS.size(); i++) {
+		//printf("%p\n", OBJECTS[i]);
 		delete OBJECTS[i];
 	}
 	OBJECTS.clear();
@@ -87,6 +92,8 @@ void SDL_CLOSE() {
 	RENDERER = NULL;
 
 	//Quit SDL subsystems
+	printf("--quitting ttf\n");
+	TTF_Quit();
 	printf("--quitting img\n");
 	IMG_Quit();
 	printf("--quitting sdl\n");
@@ -158,14 +165,14 @@ int RAND_INT(int max) {
 }
 
 int RAND_INT_RANGE(int min, int max) {
-	return rand() % (max + 1) + min;
+	return rand() % (max - 1) + min;
 }
 
 
 Object* COLLISION_AT_POINT(float newX, float newY, int layer) {
 	Object* foundObject = NULL;
 	for (int i = 0; i < OBJECTS.size(); i++) {
-		if (OBJECTS[i]->getCollisionLayer() == layer) {
+		if (OBJECTS[i]->getCollisionLayer() == layer && OBJECTS[i]->isVisible()) {
 			if (OBJECTS[i]->pointInsideBounds(newX, newY) == true) {
 				//printf("collide\n");
 				foundObject = OBJECTS[i];

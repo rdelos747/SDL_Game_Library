@@ -23,8 +23,8 @@ myObject.h is an example of a custom user-made class for the specific game (wher
 #include "path/to/myObject.h"
 
 void setup() {
-	Ship* ship = new Ship();
-	OBJECTS.push_back(ship);
+	myObject* m = new myObject();
+	OBJECTS.push_back(m);
 }
 
 int main(int argc, char* args[]) {
@@ -32,7 +32,11 @@ int main(int argc, char* args[]) {
 		printf("Failed to init\n");
 	} else {
 		setup();
-		GAME_UPDATE();
+		bool runGame = true;
+		while(runGame) {
+			// perhaps do other updates not related to the SDL_Library
+			runGame = GAME_UPDATE();
+		}
 	}
 
 	SDL_CLOSE();
@@ -111,19 +115,42 @@ void myObject::keyUp(int k) {
 - Main game loop. Issues key events, Object updates, and Sprite rendering.
 
 **SCREEN_WIDTH**
-- Type: const int. Initial 640.
+- Type const int. Initial 640.
 - Width of screen.
 - TODO: Add way for user to change this on init.
 
 **SCREEN_HEIGHT**
-- Type: const int. Initial 480.
+- Type const int. Initial 480.
 - Height of screen.
 - TODO: Add way for user to change this on init.
 
 **OBJECTS**
-- Type: std::vector<Object*>. Intial [].
+- Type std::vector<Object*>. Intial [].
 - Usage: OBJECTS.push_back(myObjectPointer)
 - Custom objects must be added to OBJECTS vector, so that the main loop (GAME_UPDATE) knows which objects to update and render.
+
+### GLOBAL FUNCTIONS
+
+**RAND_INT(int max)**
+- Type int. Params int.
+- Returns random int between 0 and max, inclusive.
+
+**RAND_INT_RANGE(int min, int max)**
+- Type int. Params int, int.
+- Returns random int between min and max, inclusive.
+
+**COLLISION_AT_POINT(float x, float y, int layer)**
+- Type Object*. Params float, float, int.
+- Returns pointer to object with collisionLayer *layer* found at point x, y. Returns NULL if no object found.
+```c++
+	Object* foundOBJ = COLLISION_AT_POINT(x, y, 1);
+	if (foundOBJ != NULL) {
+		customObject* a = (customObject *)foundOBJ;
+		a->someChildFunction();
+		selfDestroy();
+	}
+```
+- Since COLLISON_AT_POINT returns an Object pointer, it is useful to cast that pointer to a pointer of whatever type it exists as in your game, so you may call child class functions if necessary.
 
 ## OBJECT CLASS
 The Object class is what your custom game classes extend in order to interact properly with SDL and the game loop.
@@ -151,10 +178,18 @@ The Object class is what your custom game classes extend in order to interact pr
 - Type SDL_Point. Initial 0, 0.
 - Center point of Object. Object is rendered at point (x - center.x, y - center.y).
 
+**collisionLayer**
+- Type int. Initial 0.
+- Used to differentiate different objects for collision detection.
+
 **sprites**
 - Type std::vector<Sprite*>. Initial [].
 - Vector of Sprite pointers. An Object can contain however many Sprites necessary (perhaps for different visual states, animations, etc...).
 - TODO: consider making this private, so child object cannot directly interact with this vector. Child should interact using getters/ setters.
+
+**text**
+- Type Text*. Initial NULL.
+- Text object used for rendering text to the screen.
 
 **activeSprite**
 - Type int. Initial 0.
@@ -226,9 +261,38 @@ Type void. Params none.
 - If activeSprite is at 0, activeSprite will set to sprites.size() - 1 if prevSprite() is called.
 
 **getActiveSpriteWidth()**
-Type int. Params one.
+Type int. Params none.
 - Returns width of active sprite.
 
 **getActiveSpriteHeight()**
-Type int. Params one.
+Type int. Params none.
 - Returns height of active sprite.
+
+**showSprite()**
+Type void. Params none.
+- Sets Object sprite to visible.
+
+**hideSprite()**
+Type void. Params none.
+- Sets Object sprite to invisible. Invisible sprites are not considered for collision detection.
+
+**isVisible()**
+Type bool. Params none.
+- Returns whether or not Object sprites are visible.
+
+**getCollisionLayer()**
+Type void. Params none.
+- Returns collision layer of Object.
+
+**setTextFont(std::string path, int size)**
+Type void. Params string, int.
+- Initializes Object's Text object with Font. Must be called before other text methods. Font must be ttf.
+
+```c++
+setTextFont("ASSETS/myFont.ttf", 20);
+setTextValue("0", {255, 255, 255});
+```
+
+**setTextValue(std::string value/ int value, SDL_Color color)**
+Type void. Params string/ int, SDL_Color.
+- Sets text to be shown. Value can be either a string or int.
