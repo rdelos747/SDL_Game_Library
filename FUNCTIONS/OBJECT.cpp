@@ -69,12 +69,12 @@ void Object::render() {
 		float renderY = y - center.y;
 		if (activeSprite < sprites.size()) {
 			if (sprites[activeSprite]->texture != NULL) {
-				sprites[activeSprite]->render(renderX, renderY, NULL, direction, NULL);
+				sprites[activeSprite]->render(renderX - CAMERA.x, renderY - CAMERA.y, NULL, direction, NULL);
 			}
 		}
 		if (text != NULL) {
 			if (text->texture != NULL & text->font != NULL) {
-				text->render(x, y, NULL, direction, NULL);
+				text->render(x - CAMERA.x, y - CAMERA.y, NULL, direction, NULL);
 			}
 		}
 	}

@@ -24,6 +24,8 @@
 //const int SCREEN_HEIGHT = 480;
 extern int SCREEN_WIDTH;
 extern int SCREEN_HEIGHT;
+extern int LEVEL_WIDTH;
+extern int LEVEL_HEIGHT;
 
 extern SDL_Window* WINDOW;
 extern SDL_Renderer* RENDERER;
@@ -32,6 +34,7 @@ class Object;
 extern int currentID;
 extern int errorFound;
 extern std::vector<Object*> OBJECTS;
+extern SDL_Rect CAMERA;
 //extern int NEXT_ID;
 
 // /////////////////////////////////
@@ -39,11 +42,13 @@ extern std::vector<Object*> OBJECTS;
 // ////////////////////////////////////////////////////////////////
 
 // ENGINE
-bool SDL_INIT(int newScreenWidth = 640, int newScreenHeight = 480);
+bool SDL_INIT(int newScreenWidth = 640, int newScreenHeight = 480, int newLevelWidth = 640, int newLevelHeight = 480);
 void SDL_CLOSE();
 bool GAME_UPDATE();
+void updateCamera();
 
 // HELPERS
+void UPDATE_CAMERA(float newX, float newY);
 int RAND_INT(int max);
 int RAND_INT_RANGE(int min, int max);
 

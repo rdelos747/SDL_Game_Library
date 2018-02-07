@@ -105,8 +105,9 @@ void myObject::keyUp(int k) {
 
 ## RUNNING THE GAME
 
-**SDL_INIT()**
+**SDL_INIT(int newScreenWidth = 640, int newScreenHeight = 480, int newLevelWidth = 640, int newLevelHeight = 480)**
 - Loads up SDL
+- User can change default screen/ level sizes if necessary.
 
 **SDL_CLOSE()**
 - Cleans up user-created objects and sprites. Quits SDL and SDL subsystems.
@@ -117,19 +118,41 @@ void myObject::keyUp(int k) {
 **SCREEN_WIDTH**
 - Type const int. Initial 640.
 - Width of screen.
-- TODO: Add way for user to change this on init.
 
 **SCREEN_HEIGHT**
 - Type const int. Initial 480.
 - Height of screen.
-- TODO: Add way for user to change this on init.
+
+**LEVEL_WIDTH**
+- Type const int. Initial 640.
+- Width of level.
+
+**LEVEL_HEIGHT**
+- Type const int. Initial 480.
+- Height of level.
 
 **OBJECTS**
 - Type std::vector<Object*>. Intial [].
 - Usage: OBJECTS.push_back(myObjectPointer)
 - Custom objects must be added to OBJECTS vector, so that the main loop (GAME_UPDATE) knows which objects to update and render.
 
+**CAMERA**
+- Type SDL_Rect. Initial {0, 0, SCREEN_WIDTH, SCREEN_HEIGHT}.
+- CAMERA will always be the width/ height of screen.
+
 ### GLOBAL FUNCTIONS
+
+**UPDATE_CAMERA(float newX, float newY)**
+- Type void. Params float, float.
+- Change camera position within level.
+```c++
+void myObject::update() {
+	x++;
+	UPDATE_CAMERA(x - (SCREEN_WIDTH / 2), y);
+}
+```
+
+- Note: CAMERA will not move past the bounds of LEVEL_WIDTH/ LEVEL_HEIGHT.
 
 **RAND_INT(int max)**
 - Type int. Params int.

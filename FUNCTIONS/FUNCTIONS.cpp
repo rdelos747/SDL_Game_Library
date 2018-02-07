@@ -13,11 +13,14 @@ SDL_Renderer* RENDERER = NULL;			// Render Object
 
 int SCREEN_WIDTH = 0;
 int SCREEN_HEIGHT = 0;
+int LEVEL_WIDTH = 0;
+int LEVEL_HEIGHT = 0;
 
 //GAME VARS
 int currentID = 0;						// Each Object and Sprite are given a unique ID
 int errorFound = 0;						// 0 if no errors, perhaps assign number to different errors
 std::vector<Object*> OBJECTS;			// Container of Objects
+SDL_Rect CAMERA;
 bool GAME_RUNNING = true;				// Game running flag
 SDL_Event GAME_EVENT;					// Used for Key events
 
@@ -25,9 +28,12 @@ SDL_Event GAME_EVENT;					// Used for Key events
 // F U N C T I O N S
 // ////////////////////////////////////////////////////////////////
 
-bool SDL_INIT(int newScreenWidth, int newScreenHeight) {
+bool SDL_INIT(int newScreenWidth, int newScreenHeight, int newLevelWidth, int newLevelHeight) {
 	SCREEN_WIDTH = newScreenWidth;
 	SCREEN_HEIGHT = newScreenHeight;
+	LEVEL_WIDTH = newLevelWidth;
+	LEVEL_HEIGHT = newLevelHeight;
+	CAMERA = { 0, 0, SCREEN_WIDTH, SCREEN_HEIGHT };
 	//Initialization flag
 	bool success = true;
 	printf("=============================\n");
@@ -143,6 +149,8 @@ bool GAME_UPDATE() {
 			}
 		}
 
+		updateCamera();
+
 		// Check for errors before rendering
 		if (errorFound != 0) {
 			return false;
@@ -158,6 +166,26 @@ bool GAME_UPDATE() {
 	} else {
 		return false;
 	}
+}
+
+void updateCamera() {
+	if( CAMERA.x < 0 ) { 
+		CAMERA.x = 0;
+	}
+	if( CAMERA.y < 0 ) {
+		CAMERA.y = 0;
+	}
+	if( CAMERA.x > LEVEL_WIDTH - CAMERA.w ) {
+		CAMERA.x = LEVEL_WIDTH - CAMERA.w;
+	}
+	if( CAMERA.y > LEVEL_HEIGHT - CAMERA.h ) {
+		CAMERA.y = LEVEL_HEIGHT - CAMERA.h;
+	}
+}
+
+void UPDATE_CAMERA(float newX, float newY) {
+	CAMERA.x = newX;
+	CAMERA.y = newY;
 }
 
 int RAND_INT(int max) {
