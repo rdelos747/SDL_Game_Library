@@ -53,15 +53,12 @@ bool Sprite::loadFromFile(SDL_Renderer* renderer, std::string path) {
 void Sprite::freeSprite()
 {
 	//Free texture if it exists
-	//printf("   --in sprite free ID: %d\n", ID);
 	if( texture != NULL )
 	{
-		//printf("trying to free sprite?\n");
 		SDL_DestroyTexture( texture );
 		texture = NULL;
 		spriteWidth = 0;
 		spriteHeight = 0;
-		//printf("   --freeing sprite ID: %d\n", ID);
 	}
 }
 

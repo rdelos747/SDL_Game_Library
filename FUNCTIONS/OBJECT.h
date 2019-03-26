@@ -24,19 +24,17 @@ public:
 	virtual void keyUp(int k);
 
 	//not overridden, child must call Object::function()
-	
-	//void addText(std::string path, int size, SDL_Color textColor, std::string value);
-
-	// move these to engine.. then just call linkFont similar to linkSprite..
-	//
 
 	// object
-	int getID();
-	int setID(int newID);
 	void selfDestroy();
 	bool isDestroyed();
+	int getID();
+	int setID(int newID);
 	int getCollisionLayer();
 	bool pointInsideBounds(float pointX, float pointY);
+
+	// for Engine
+	void render();
 
 	// sprites
 	void linkSprite(Sprite* newSprite);
@@ -46,14 +44,9 @@ public:
 	void hideSprite();
 
 	// text
-	//void setFont(TTF_Font* font);
 	void linkFont(TTF_Font* font);
 	void setText(std::string value, SDL_Color color);
 	void setText(int value, SDL_Color color);
-
-	// getters for Engine
-	//int getActiveSprite();
-	void render();
 
 	// vars
 	int collisionLayer;
@@ -71,15 +64,7 @@ private:
 	std::vector<Sprite*> sprites;
 	
 protected:
-	//OBJECT VARS
-	// int collisionLayer;
-
-	//SPRITE VARS
 	int activeSprite;
-	// SDL_Point center;
-	// float x;
-	// float y;
-	// int direction;
 };
 
 #endif

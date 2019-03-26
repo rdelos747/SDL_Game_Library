@@ -8,8 +8,8 @@
 #include <string>
 
 #include "SPRITE.h"
-//#include "TEXT.h"
 #include "OBJECT.h"
+//#include "TEXT.h"
 
 #include <vector>
 #include <math.h>
@@ -19,7 +19,7 @@ class Sprite;
 
 class Engine {
 public:
-  //general
+  // GENERAL
   Engine();
   ~Engine();
   bool init(int newScreenWidth = 640, 
@@ -30,36 +30,36 @@ public:
   bool update();
   void setError(int n);
 
-  //objects
+  // OBJECTS
   int addObject(Object* newObject);
   Object* collisionAtPoint(float newX, float newY, int layer);
 
-  //sprites
+  // SPRITES
   Sprite* addSprite(std::string path);
-  int getSpriteWidth(int index);
-  int getSpriteHeight(int index);
 
-  // camera
+  // CAMERA
   void updateCamera(float newX, float newY);
 
-  //fonts
+  // FONTS
   TTF_Font* addFont(std::string path, int size);
 
-  //randint
-  //randintrange
+  // HELPERS
+  int randInt(int max);
+  int randIntRange(int min, int max);
+  bool chance(int max);
 
   SDL_Renderer* renderer;
   SDL_Rect camera;
 
 private:
   void setCamera();
-  //void renderObjects();
 
   int screenWidth;
   int screenHeight;
   int levelWidth;
   int levelHeight;
   SDL_Window* window;
+  SDL_Event gameEvent;
   
 
   bool gameRunning;
@@ -68,7 +68,6 @@ private:
   std::vector<Object*> objects;
   std::vector<Sprite*> sprites;
   std::vector<TTF_Font*> fonts;
-  SDL_Event gameEvent;
 };
 
 #endif

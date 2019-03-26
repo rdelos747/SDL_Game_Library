@@ -1,17 +1,13 @@
-//TODO
-// make game class
-// compile to just one o file?
-
 #include "ENGINE.h"
 
 #define PI 3.14159265
 
 // /////////////////////////////////
-// P U B L I C
+// G E N E R A L
 // ////////////////////////////////////////////////////////////////
 
 Engine::Engine() {
-	errorFound = 0; // is this necessary? i forget if i have to initialize in c++.. i probably should..
+	errorFound = 0;
 	gameRunning = true;
 	// screenWidth = -1;
 	// screenHeight = -1;
@@ -22,9 +18,7 @@ Engine::Engine() {
 	// renderer = NULL;
 }
 
-Engine::~Engine() {
-
-}
+Engine::~Engine() {}
 
 bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, int newLevelHeight) {
 	screenWidth = newScreenWidth;
@@ -32,6 +26,7 @@ bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, in
 	levelWidth = newLevelWidth;
 	levelHeight = newLevelHeight;
 	camera = { 0, 0, screenWidth, screenHeight };
+
 	//Initialization flag
 	bool success = true;
 	printf("=============================\n");
@@ -39,16 +34,16 @@ bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, in
 
 	//Initialize SDL
 	if( SDL_Init( SDL_INIT_VIDEO ) < 0 ) {
-		printf( "SDL could not initialize! SDL Error: %s\n", SDL_GetError() );
+		printf("SDL could not initialize! SDL Error: %s\n", SDL_GetError());
 		success = false;
 	} else {
 		//Set texture filtering to linear
 		if( !SDL_SetHint( SDL_HINT_RENDER_SCALE_QUALITY, "1" ) ) {
-			printf( "Warning: Linear texture filtering not enabled!" );
+			printf("Warning: Linear texture filtering not enabled!");
 		}
 
 		//Create window
-		window = SDL_CreateWindow( "SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN );
+		window = SDL_CreateWindow("SDL GAME", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, screenWidth, screenHeight, SDL_WINDOW_SHOWN);
 		if( window == NULL ) {
 			printf( "Window could not be created! SDL Error: %s\n", SDL_GetError() );
 			success = false;
@@ -83,23 +78,19 @@ void Engine::close() {
 	printf("CLOSING LIBRARY\n");
 	printf("--deleting objects: %lu\n", objects.size());
 	for (int i = 0; i < objects.size(); i++) {
-		//printf("%p\n", OBJECTS[i]);
 		delete objects[i];
 	}
 	objects.clear();
 
 	printf("--deleting sprites: %lu\n", sprites.size());
 	for (int i = 0; i < sprites.size(); i++) {
-		//printf("%p\n", OBJECTS[i]);
 		delete sprites[i];
 	}
 	sprites.clear();
 
 	printf("--deleting fonts: %lu\n", fonts.size());
 	for (int i = 0; i < fonts.size(); i++) {
-		//printf("%p\n", OBJECTS[i]);
 		TTF_CloseFont(fonts[i]);
-		//delete fonts[i];
 	}
 	fonts.clear();
 	
@@ -187,9 +178,14 @@ void Engine::setError(int n) {
 	errorFound = n;
 }
 
-void Engine::updateCamera(float newX, float newY) {
-	camera.x = newX;
-	camera.y = newY;
+// /////////////////////////////////
+// O B J E C T S
+// ////////////////////////////////////////////////////////////////
+
+int Engine::addObject(Object* newObject) {
+	newObject->setID(currentID++);
+	objects.push_back(newObject);
+	return newObject->getID();
 }
 
 Object* Engine::collisionAtPoint(float newX, float newY, int layer) {
@@ -205,11 +201,9 @@ Object* Engine::collisionAtPoint(float newX, float newY, int layer) {
 	return foundObject;
 }
 
-int Engine::addObject(Object* newObject) {
-	newObject->setID(currentID++);
-	objects.push_back(newObject);
-	return newObject->getID();
-}
+// /////////////////////////////////
+// S P R I T E S
+// ////////////////////////////////////////////////////////////////
 
 Sprite* Engine::addSprite(std::string path) {
 	Sprite* s = new Sprite;
@@ -220,18 +214,13 @@ Sprite* Engine::addSprite(std::string path) {
 	} else {
 		s->setID(currentID++);
 		sprites.push_back(s);
-		// return s->getID();
 		return s;
 	}
 }
 
-int Engine::getSpriteWidth(int index) {
-	return sprites[index]->getWidth();
-}
-
-int Engine::getSpriteHeight(int index) {
-	return sprites[index]->getHeight();
-}
+// /////////////////////////////////
+// F O N T S
+// ////////////////////////////////////////////////////////////////
 
 TTF_Font* Engine::addFont(std::string path, int size) {
 	TTF_Font* font = TTF_OpenFont(path.c_str(), size);
@@ -247,36 +236,16 @@ TTF_Font* Engine::addFont(std::string path, int size) {
 }
 
 // /////////////////////////////////
-// P R I V A T E
+// C A M E R A
 // ////////////////////////////////////////////////////////////////
 
-// void Engine::renderObjects() {
-// 	for (int i = 0; i < objects.size(); i++) {
-// 		// if (objects[i]->visible == true) {
-// 		// 	int index = objects[i]->getActiveSprite();
-// 		// 	float renderX = objects[i]->x - objects[i]->center.x;
-// 		// 	float renderY = objects[i]->y - objects[i]->center.y;
-// 		// 	int direction = objects[i]->direction;
+// public
+void Engine::updateCamera(float newX, float newY) {
+	camera.x = newX;
+	camera.y = newY;
+}
 
-// 		// 	if (index >= 0 && index < sprites.size()) {
-// 		// 		if (sprites[index]->texture != NULL) {
-// 		// 			sprites[index]->render(renderer, renderX - camera.x, renderY - camera.y, NULL, direction, NULL);
-// 		// 		}
-// 		// 	}
-// 		// 	if (objects[i]->text != NULL) {
-// 		// 		if (text->texture != NULL & text->font != NULL) {
-// 		// 			text->render(x - CAMERA.x, y - CAMERA.y, NULL, direction, NULL);
-// 		// 		}
-// 		// 	}
-// 		// 	// if (text != NULL) {
-// 		// 	// 	if (text->texture != NULL & text->font != NULL) {
-// 		// 	// 		text->render(x - CAMERA.x, y - CAMERA.y, NULL, direction, NULL);
-// 		// 	// 	}
-// 		// 	// }
-// 		// }
-// 	}
-// }
-
+// private
 void Engine::setCamera() {
 	if( camera.x < 0 ) { 
 		camera.x = 0;
@@ -290,6 +259,21 @@ void Engine::setCamera() {
 	if( camera.y > levelHeight - camera.h ) {
 		camera.y = levelHeight - camera.h;
 	}
+}
+
+// /////////////////////////////////
+// H E L P E R S
+// ////////////////////////////////////////////////////////////////
+int Engine::randInt(int max) {
+	return rand() % (max + 1);
+}
+
+int Engine::randIntRange(int min, int max) {
+	return rand() % (max - 1) + min;
+}
+
+bool Engine::chance(int max) {
+	return randInt(99) < max;
 }
 
 // #include "FUNCTIONS.h"

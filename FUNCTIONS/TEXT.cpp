@@ -95,18 +95,3 @@ int Text::getWidth() {
 int Text::getHeight() {
 	return textHeight;
 }
-
-// int Text::getID() {
-// 	return ID;
-// }
-
-// int Text::setID(int newID) {
-// 	if (ID == -1) {
-// 		ID = newID;
-// 	}
-// 	else {
-// 		printf("Text ID already set as %d\n", ID);
-// 	}
-
-// 	return ID;
-// }

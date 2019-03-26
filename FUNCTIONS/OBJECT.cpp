@@ -9,14 +9,11 @@
 // ////////////////////////////////////////////////////////////////
 
 Object::Object(Engine* newEgPtr) {
-	//printf(" --OBJECT CONSTRUCTOR %d\n", ID);
 
 	// SET THE ENGINE
 	egPtr = newEgPtr;
 	// OBJECT VARS
 	destroy = false;
-	//ID = currentID++; // this should not be set here...
-	// when user calls engine.addObject, the pushed object is assigned an id there
 	ID = -1;
 	collisionLayer = 0;
 	x = 0;
@@ -94,17 +91,13 @@ void Object::render() {
 				text->render(egPtr->renderer, x - egPtr->camera.x, y - egPtr->camera.y, NULL, direction, NULL);
 			}
 		}
-		// if (text != NULL) {
-		// 	if (text->texture != NULL & text->font != NULL) {
-		// 		text->render(x - CAMERA.x, y - CAMERA.y, NULL, direction, NULL);
-		// 	}
-		// }
 	}
 }
 
 // /////////////////////////////////
 // OBJECT FUNCTIONS (called by everyone)
 // ////////////////////////////////////////////////////////////////
+
 int Object::getID() {
 	return ID;
 }
@@ -144,9 +137,39 @@ bool Object::pointInsideBounds(float pointX, float pointY) {
 // ////////////////////////////////////////////////////////////////
 
 void Object::linkSprite(Sprite* newSprite) {
-	// sprites are passed around by their index within the engine.
 	sprites.push_back(newSprite);
 }
+
+void Object::showSprite() {
+	visible = true;
+}
+
+void Object::hideSprite() {
+	visible = false;
+}
+
+void Object::nextSprite() {
+	activeSprite++;
+	if (activeSprite >= sprites.size()) {
+		activeSprite = 0;
+	}
+}
+
+void Object::prevSprite() {
+	if (sprites.size() == 0) {
+		activeSprite = 0;
+	}
+	else {
+		activeSprite--;
+		if (activeSprite < 0) {
+			activeSprite = sprites.size() - 1;
+		}
+	}
+}
+
+// /////////////////////////////////
+// TEXT FUNCTIONS (called by child)
+// ////////////////////////////////////////////////////////////////
 
 void Object::linkFont(TTF_Font* font) {
 	// should I clear the text object first if one exists???
@@ -189,47 +212,3 @@ void Object::setText(int value, SDL_Color color) {
 		}
 	}
 }
-
-void Object::showSprite() {
-	visible = true;
-}
-
-void Object::hideSprite() {
-	visible = false;
-}
-
-// bool Object::isVisible() {
-// 	return visible;
-// }
-
-void Object::nextSprite() {
-	activeSprite++;
-	if (activeSprite >= sprites.size()) {
-		activeSprite = 0;
-	}
-}
-
-void Object::prevSprite() {
-	if (sprites.size() == 0) {
-		activeSprite = 0;
-	}
-	else {
-		activeSprite--;
-		if (activeSprite < 0) {
-			activeSprite = sprites.size() - 1;
-		}
-	}
-}
-
-// int Object::getActiveSprite() {
-// 	return sprites[activeSprite];
-// }
-
-//move these to engine since the engine is the only thing that has the sprites.
-// int Object::getActiveSpriteWidth() {
-// 	return sprites[activeSprite]->getWidth();
-// }
-
-// int Object::getActiveSpriteHeight() {
-// 	return sprites[activeSprite]->getHeight();
-// }
