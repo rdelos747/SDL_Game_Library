@@ -1,0 +1,39 @@
+Game Library Design
+
+GAME CLASS
+////////////////////////////////////////////
+Private:
+  Objects vector
+  Sprites vector (or spritesheet)
+  Level vars
+
+Public
+  update
+  addObject
+
+EXAMPLE USAGE
+////////////////////////////////////////////
+  main.cpp
+    link library
+    include headers
+
+    create game object g
+    do user defined setup (optional)
+      define some user objects
+      g.addObject(objects)
+    while true
+      g.update()
+        // this calls the update of every object in the objects vector
+      if some interrupt
+        break
+    cleanup and exit
+
+  sample.cpp
+
+
+
+ADDING SPRITES 
+////////////////////////////////////////////
+call engine.addSprite("file-path")
+save this to variable eg "int shipSprite"
+create object 

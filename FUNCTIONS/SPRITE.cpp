@@ -5,7 +5,7 @@
 #include "SPRITE.h"
 
 Sprite::Sprite() {
-	ID = currentID++;
+	ID = -1;
 	texture = NULL;
 	spriteWidth = 0;
 	spriteHeight = 0;
@@ -13,10 +13,10 @@ Sprite::Sprite() {
 
 Sprite::~Sprite() {
 	freeSprite();
-	ID = 0;
+	ID = -1;
 }
 
-bool Sprite::loadFromFile(std::string path) {
+bool Sprite::loadFromFile(SDL_Renderer* renderer, std::string path) {
 	//Get rid of preexisting texture
 	freeSprite();
 
@@ -32,7 +32,7 @@ bool Sprite::loadFromFile(std::string path) {
 		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0, 0));
 
 		//Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface(RENDERER, loadedSurface);
+    newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
 		if (newTexture == NULL) {
 			printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
 		} else {
@@ -65,7 +65,7 @@ void Sprite::freeSprite()
 	}
 }
 
-void Sprite::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
+void Sprite::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
 {
 	//Set rendering space and render to screen
 	SDL_Rect renderQuad = { x, y, spriteWidth, spriteHeight };
@@ -78,7 +78,7 @@ void Sprite::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* cent
 	}
 
 	//Render to screen
-	SDL_RenderCopyEx( RENDERER, texture, clip, &renderQuad, angle, center, flip );
+	SDL_RenderCopyEx(renderer, texture, clip, &renderQuad, angle, center, flip );
 }
 
 int Sprite::getWidth() {
@@ -90,5 +90,16 @@ int Sprite::getHeight() {
 }
 
 int Sprite::getID() {
+	return ID;
+}
+
+int Sprite::setID(int newID) {
+	if (ID == -1) {
+		ID = newID;
+	}
+	else {
+		printf("Sprite ID already set as %d\n", ID);
+	}
+
 	return ID;
 }

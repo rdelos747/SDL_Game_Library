@@ -6,59 +6,80 @@
 #define OBJECT_H
 
 #include <vector>
-#include "FUNCTIONS.h"
+#include "ENGINE.h"
 #include "SPRITE.h"
 #include "TEXT.h"
 
-class Sprite;
+class Engine;
 class Text;
+class Sprite;
 
 class Object {
 public:
 	//functions that get overridden by child
-	Object();
+	Object(Engine* newParent);
 	virtual ~Object();
 	virtual void update();
 	virtual void keyDown(int k);
 	virtual void keyUp(int k);
 
 	//not overridden, child must call Object::function()
-	void nextSprite();
-	void prevSprite();
-	void render();
-	void addSprite(std::string path);
-	//void addFont(std::string path, int size, SDL_Color textColor);
+	
 	//void addText(std::string path, int size, SDL_Color textColor, std::string value);
-	void setTextFont(std::string path, int size);
-	void setTextValue(std::string value, SDL_Color color);
-	void setTextValue(int value, SDL_Color color);
-	void showSprite();
-	void hideSprite();
-	bool isVisible();
-	int getActiveSpriteWidth();
-	int getActiveSpriteHeight();
+
+	// move these to engine.. then just call linkFont similar to linkSprite..
+	//
+
+	// object
+	int getID();
+	int setID(int newID);
 	void selfDestroy();
 	bool isDestroyed();
 	int getCollisionLayer();
 	bool pointInsideBounds(float pointX, float pointY);
 
-private:
-	bool destroy;
-	bool visible;
-	
-protected:
-	//OBJECT VARS
-	int ID;
-	int collisionLayer;
+	// sprites
+	void linkSprite(Sprite* newSprite);
+	void nextSprite();
+	void prevSprite();
+	void showSprite();
+	void hideSprite();
 
-	//SPRITE VARS
-	std::vector<Sprite*> sprites;
-	Text* text;
-	int activeSprite;
+	// text
+	//void setFont(TTF_Font* font);
+	void linkFont(TTF_Font* font);
+	void setText(std::string value, SDL_Color color);
+	void setText(int value, SDL_Color color);
+
+	// getters for Engine
+	//int getActiveSprite();
+	void render();
+
+	// vars
+	int collisionLayer;
 	SDL_Point center;
 	float x;
 	float y;
 	int direction;
+	bool visible;
+
+private:
+	bool destroy;
+	int ID;
+	Engine* egPtr;
+	Text* text;
+	std::vector<Sprite*> sprites;
+	
+protected:
+	//OBJECT VARS
+	// int collisionLayer;
+
+	//SPRITE VARS
+	int activeSprite;
+	// SDL_Point center;
+	// float x;
+	// float y;
+	// int direction;
 };
 
 #endif
