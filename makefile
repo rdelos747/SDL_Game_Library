@@ -9,7 +9,7 @@ LDFLAGS = -I/usr/local/include -L/usr/local/lib -lSDL2 -lSDL2_image -lSDL2_ttf
 #EXE = SDL_LIBRARY
 #list of objects
 #OBJS = engine.o sprite.o text.o object.o
-OBJS = engine.o sprite.o object.o text.o
+OBJS = engine.o timer.o sprite.o object.o text.o
 
 #all: $(EXE)
 
@@ -30,6 +30,9 @@ text.o: FUNCTIONS/text.cpp FUNCTIONS/text.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 object.o: FUNCTIONS/object.cpp FUNCTIONS/object.h
+	$(CXX) $(CXXFLAGS) $< -o $@
+
+timer.o: FUNCTIONS/timer.cpp FUNCTIONS/timer.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:

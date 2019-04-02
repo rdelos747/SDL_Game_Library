@@ -9,13 +9,15 @@
 
 #include "SPRITE.h"
 #include "OBJECT.h"
-//#include "TEXT.h"
+#include "TIMER.h"
+#include "TEXT.h"
 
 #include <vector>
 #include <math.h>
 
 class Object;
 class Sprite;
+class Text;
 
 class Engine {
 public:
@@ -25,7 +27,9 @@ public:
   bool init(int newScreenWidth = 640, 
             int newScreenHeight = 480, 
             int newLevelWidth = 640, 
-            int newLevelHeight = 480);
+            int newLevelHeight = 480,
+            int newFrameRate = 60,
+            bool showData = true);
   void close();
   bool update();
   void setError(int n);
@@ -58,9 +62,14 @@ private:
   int screenHeight;
   int levelWidth;
   int levelHeight;
+  int frameRate;
+  float ticksPerFrame;
   SDL_Window* window;
   SDL_Event gameEvent;
-  
+
+  Timer fpsTimer;
+  Timer capTimer;
+  int countedFrames;
 
   bool gameRunning;
   int currentID;
@@ -68,6 +77,9 @@ private:
   std::vector<Object*> objects;
   std::vector<Sprite*> sprites;
   std::vector<TTF_Font*> fonts;
+
+  TTF_Font* dataFont;
+  Text* dataText;
 };
 
 #endif

@@ -9,6 +9,7 @@
 Engine::Engine() {
 	errorFound = 0;
 	gameRunning = true;
+	dataFont = NULL;
 	// screenWidth = -1;
 	// screenHeight = -1;
 	// levelWidth = -1;
@@ -20,13 +21,15 @@ Engine::Engine() {
 
 Engine::~Engine() {}
 
-bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, int newLevelHeight) {
+bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, int newLevelHeight, int newFrameRate, bool showData) {
 	screenWidth = newScreenWidth;
 	screenHeight = newScreenHeight;
 	levelWidth = newLevelWidth;
 	levelHeight = newLevelHeight;
-	camera = { 0, 0, screenWidth, screenHeight };
-
+	frameRate = newFrameRate;
+	ticksPerFrame = 1000 / frameRate;
+	camera = {0, 0, screenWidth, screenHeight};
+	printf("ticks per frame %f\n", ticksPerFrame);
 	//Initialization flag
 	bool success = true;
 	printf("=============================\n");
@@ -49,7 +52,7 @@ bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, in
 			success = false;
 		} else {
 			//Create vsynced renderer for window
-			renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC );
+			renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 			if( renderer == NULL ) {
 				printf( "Renderer could not be created! SDL Error: %s\n", SDL_GetError() );
 				success = false;
@@ -70,6 +73,15 @@ bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, in
 			}
 		}
 	}
+
+	if (success) {
+		dataFont = addFont("../SDL_LIBRARY/data.ttf", 12);
+		dataText = new Text;
+		dataText->font = dataFont;
+	}
+
+	countedFrames = 0;
+  fpsTimer.start();
 	return success;
 }
 
@@ -88,12 +100,15 @@ void Engine::close() {
 	}
 	sprites.clear();
 
+	// clear data text
+	dataText->freeText();
+	dataText = NULL;
+
 	printf("--deleting fonts: %lu\n", fonts.size());
 	for (int i = 0; i < fonts.size(); i++) {
 		TTF_CloseFont(fonts[i]);
 	}
 	fonts.clear();
-	
 
 	printf("--destroying renderer\n");
 	SDL_DestroyRenderer( renderer );
@@ -113,7 +128,11 @@ void Engine::close() {
 
 bool Engine::update() {
 	if (gameRunning) {
+		capTimer.start();
+
 		while(SDL_PollEvent(&gameEvent) != 0) {
+			// start fps
+
 			if (gameEvent.type == SDL_QUIT) {
 				gameRunning = false;
 			} else if (gameEvent.type == SDL_KEYDOWN && gameEvent.key.keysym.sym == SDLK_ESCAPE) {
@@ -165,9 +184,29 @@ bool Engine::update() {
 		for (int i = 0; i < objects.size(); i++) {
 			objects[i]->render();
 		}
-		//renderObjects();
 
-		SDL_RenderPresent( renderer );
+		// calculate fps
+		float avgFPS = countedFrames / (fpsTimer.getTicks() / 1000.f);
+		if (avgFPS > 2000000) {
+			avgFPS = 0;
+		}
+		
+		dataText->loadFromRenderedText(renderer, "hey", {255, 255, 255});
+		dataText->render(renderer, 10, 10, NULL, 0, NULL);
+
+		SDL_RenderPresent(renderer);
+		
+
+		//printf("w: %d\n", dataText->getWidth());
+
+		++countedFrames;
+		//If frame finished early
+		int frameTicks = capTimer.getTicks();
+		if (frameTicks < ticksPerFrame) {
+				//Wait remaining time
+				SDL_Delay(ticksPerFrame - frameTicks);
+		}
+
 		return true;
 	} else {
 		return false;
@@ -225,7 +264,7 @@ Sprite* Engine::addSprite(std::string path) {
 TTF_Font* Engine::addFont(std::string path, int size) {
 	TTF_Font* font = TTF_OpenFont(path.c_str(), size);
 	if (font == NULL) {
-		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
+		printf("Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError());
 		errorFound = 1;
 	}
 	else {
