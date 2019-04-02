@@ -65,8 +65,8 @@ public:
 void setup() {
 	// my preferred way of adding sprites/ fonts is to declare them all in the setup...
 	// you can also do this within each object for better organization (see above)
-	Sprite* testSprite = engine->addSprite("../SDL_ASTEROIDS/ASSETS/asteroid_large01.png");
-	TTF_Font* testFont = engine->addFont("./ShareTechMono-Regular.ttf", 10);
+	Sprite* testSprite = engine->addSprite("path/to/sprite.png");
+	TTF_Font* testFont = engine->addFont("./myfont.ttf", 10);
 
 	Test* test = new Test(engine);
 	test->linkSprite(testSprite);
