@@ -33,16 +33,15 @@ public:
 	int getCollisionLayer();
 	bool pointInsideBounds(float pointX, float pointY);
 
-	// for Engine
-	void render();
-
 	// sprites
+	std::string getSprite();
 	void setSprite(std::string key);
 	void showSprite();
 	void hideSprite();
 
 	// text
 	void linkFont(TTF_Font* font);
+	Text* getText();
 	void setText(std::string value, SDL_Color color);
 	void setText(int value, SDL_Color color);
 

@@ -183,7 +183,7 @@ bool Engine::update() {
 
 		//handle object renders
 		for (int i = 0; i < objects.size(); i++) {
-			objects[i]->render();
+			renderObject(objects[i]);
 		}
 
 		// calculate fps
@@ -257,15 +257,32 @@ Sprite* Engine::addSprite(std::string key, std::string path) {
 	}
 }
 
-void Engine::renderSprite(std::string key, int renderX, int renderY, int direction) {
-	// Sprite* sprite = sprites[key];
-	std::map<std::string, Sprite*>::iterator it = sprites.find(key);
-	if(it != sprites.end()) {
-		Sprite* sprite = it->second;
-		if (sprite->texture != NULL) {
-			sprite->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, direction, NULL);
+void Engine::renderObject(Object* object) {
+	if (object->visible == true) {
+		float renderX = object->x - object->center.x;
+		float renderY = object->y - object->center.y;
+
+		std::string spriteKey = object->getSprite();
+
+		if(spriteKey != "") {
+			std::map<std::string, Sprite*>::iterator it = sprites.find(spriteKey);
+			if(it != sprites.end()) {
+				Sprite* sprite = it->second;
+				if (sprite->texture != NULL) {
+					sprite->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, object->direction, NULL);
+				}
+			}
+		}
+
+		Text* text = object->getText();
+		if (text != NULL && text->texture != NULL && text->font != NULL) {
+			text->render(ENGINE.renderer, object->x - ENGINE.camera.x, object->y - ENGINE.camera.y, NULL, object->direction, NULL);
 		}
 	}
+
+
+	// Sprite* sprite = sprites[key];
+	
 }
 
 // /////////////////////////////////

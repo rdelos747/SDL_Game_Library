@@ -71,26 +71,6 @@ bool Object::isDestroyed() {
 }
 
 // /////////////////////////////////
-// RENDER (called by engine)
-// ////////////////////////////////////////////////////////////////
-void Object::render() {
-	if (visible == true) {
-		float renderX = x - center.x;
-		float renderY = y - center.y;
-
-		if(sprite != "") {
-			ENGINE.renderSprite(sprite, renderX, renderY, direction);
-		}
-
-		if (text != NULL) {
-			if (text->texture != NULL & text->font != NULL) {
-				text->render(ENGINE.renderer, x - ENGINE.camera.x, y - ENGINE.camera.y, NULL, direction, NULL);
-			}
-		}
-	}
-}
-
-// /////////////////////////////////
 // OBJECT FUNCTIONS (called by everyone)
 // ////////////////////////////////////////////////////////////////
 
@@ -132,6 +112,10 @@ bool Object::pointInsideBounds(float pointX, float pointY) {
 // SPRITE FUNCTIONS (called by child)
 // ////////////////////////////////////////////////////////////////
 
+std::string Object::getSprite() {
+	return sprite;
+}
+
 void Object::setSprite(std::string key) {
 	sprite = key;
 }
@@ -158,6 +142,10 @@ void Object::linkFont(TTF_Font* font) {
 	} else {
 		text = t;
 	}
+}
+
+Text* Object::getText() {
+	return text;
 }
 
 void Object::setText(std::string value, SDL_Color color) {
