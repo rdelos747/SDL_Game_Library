@@ -6,99 +6,90 @@ Note: this project is in the very early stages of development and will probably 
 
 ## INSTALLATION
 
-1. Install SDL2 and SDL_IMAGE frameworks to your machine. 
-2. Include SDL_LIBRARY/FUNCTIONS in your project directory.
+1. Install SDL2 and SDL_IMAGE frameworks to your machine. (I used brew on osx)
+2. Include SDL_LIBRARY/FUNCTIONS/ENGINE.h"in your project directory.
 3. MAKE!
+
+## TODOs
+
+- Include should just be `path/to/library/engine.h` instead of that mess with the functions directory.
+- Fix up this readme.. everything in the api reference is wrong :)
 
 ## SIMPLE EXAMPLE
 
-FUNCTIONS.h contains all necessary includes and code to get stated. 
+ENGINE.h contains all necessary includes and code to get stated. 
 
 myObject.h is an example of a custom user-made class for the specific game (where you would put your code :). 
 
 ```c++
-// main.cpp
+// test.cpp
 
-#include "path/to/SDL_LIBRARY/FUNCTIONS/FUNCTIONS.h"
-#include "path/to/myObject.h"
+#include <iostream>
+#include "pathto/SDL_LIBRARY/FUNCTIONS/ENGINE.h"
+
+Engine* engine = new Engine();
+
+class Test: public Object {
+public:
+	Test(Engine* parent)
+	:Object(parent) {
+		// you can add sprites here by calling parent->addSprite(...)
+		// and then call linkSprite(pointerToAboveSprite)
+	}
+
+
+	// update, keyDown, and keyUp are virtuals that the child can override
+	void update() {
+		x+=1;
+	}
+
+	void keyDown(int k) {}
+	void keyUp(int k){}
+};
+
+class TextTest: public Object {
+public:
+	TextTest(Engine* parent, TTF_Font* f)
+	:Object(parent) {
+		x = 10;
+		y = 10;
+		linkFont(f);
+	}
+
+	void update() {
+		setText("heyo", {255,255,255});
+	}
+};
+
 
 void setup() {
-	myObject* m = new myObject();
-	OBJECTS.push_back(m);
+	// my preferred way of adding sprites/ fonts is to declare them all in the setup...
+	// you can also do this within each object for better organization (see above)
+	Sprite* testSprite = engine->addSprite("path/to/sprite.png");
+	TTF_Font* testFont = engine->addFont("./myfont.ttf", 10);
+
+	Test* test = new Test(engine);
+	test->linkSprite(testSprite);
+	engine->addObject(test);
+
+	TextTest* tt = new TextTest(engine, testFont);
+	engine->addObject(tt);
 }
 
 int main(int argc, char* args[]) {
-	if (!SDL_INIT()) {
+	if (!engine->init()) {
 		printf("Failed to init\n");
 	} else {
 		setup();
 		bool runGame = true;
 		while(runGame) {
-			// perhaps do other updates not related to the SDL_Library
-			runGame = GAME_UPDATE();
+			runGame = engine->update();
 		}
 	}
 
-	SDL_CLOSE();
+	engine->close();
 	return 0;
 }
-```
-
-Your main.cpp must #include FUNCTIONS.h, and first call SDL_INIT(), then call GAME_UPDATE(). Finally, you must conclude by calling SDL_CLOSE();
-
-```c++
-// myObject.h
-#ifndef MYOBJECT_H
-#define MYOBJECT_H
-
-#include "path/to/SDL_LIBRARY/FUNCTIONS/FUNCTIONS.h"
-
-class myObject:public Object {
-public:
-	// Object parent class does much initialization for you (eg setting x = 0, direction = 0, etc...)
-	myObject();
-	~myObject();
-	// below are virtual Object methods the child can override
-	void update();
-	void keyDown(int k);
-	void keyUp(int k);
-private:
-	// put whatever custom variables here...
-};
-
-#endif
-```
-
-```c++
-// myObject.cpp
-
-#include myObject.h
-
-myObject::myObject() {
-	// whatever intitialization you like...
-	// for example, add a sprite to your object:
-	addSprite("path/to/sprite.png");
-}
-
-myObject::~myObject() {
-	// Parent Object destructor will be called, so usually you can relax here
-}
-
-void myObject::update() {
-	// you must override this if you want your custom object to do things on screen.
-	// for example:
-	x += 5;
-}
-
-void myObject::keyDown(int k) {
-	//override if you need key down
-}
-
-void myObject::keyUp(int k) {
-	//override if you need key up
-}
-
-// add more custom functions if necessary...
 ```
 
 # API REFERENCE

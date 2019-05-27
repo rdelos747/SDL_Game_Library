@@ -2,10 +2,10 @@
 // T E X T
 // ////////////////////////////////////////////////////////////////
 
-#include "SPRITE.h"
+#include "TEXT.h"
 
 Text::Text() {
-	ID = currentID++;
+	// ID = -1;
 	texture = NULL;
 	font = NULL;
 	textWidth = 0;
@@ -14,10 +14,10 @@ Text::Text() {
 
 Text::~Text() {
 	freeText();
-	ID = 0;
+	// ID = 0;
 }
 
-bool Text::loadFromRenderedText(std::string textureText, SDL_Color textColor)
+bool Text::loadFromRenderedText(SDL_Renderer* renderer, std::string textureText, SDL_Color textColor)
 {
     //Get rid of preexisting texture
     freeTextTexture();
@@ -29,7 +29,7 @@ bool Text::loadFromRenderedText(std::string textureText, SDL_Color textColor)
         printf( "Unable to render text surface! SDL_ttf Error: %s\n", TTF_GetError() );
     } else {
         //Create texture from surface pixels
-        newTexture = SDL_CreateTextureFromSurface( RENDERER, textSurface );
+        newTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
         if( newTexture == NULL ) {
             printf( "Unable to create texture from rendered text! SDL Error: %s\n", SDL_GetError() );
         } else {
@@ -39,7 +39,7 @@ bool Text::loadFromRenderedText(std::string textureText, SDL_Color textColor)
         }
 
         //Get rid of old surface
-        SDL_FreeSurface( textSurface );
+        SDL_FreeSurface(textSurface);
     }
     
     //Return success
@@ -57,9 +57,9 @@ void Text::freeText() {
 		textWidth = 0;
 		textHeight = 0;
 		//printf("   --freeing sprite ID: %d\n", ID);
-		TTF_CloseFont( font );
+		//TTF_CloseFont( font ); do this in engine
     	font = NULL;
-		ID = 0;
+		// ID = 0;
 	}
 }
 
@@ -72,7 +72,7 @@ void Text::freeTextTexture() {
     }
 }
 
-void Text::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
+void Text::render(SDL_Renderer* renderer, int x, int y, SDL_Rect* clip, double angle, SDL_Point* center, SDL_RendererFlip flip )
 {
     //Set rendering space and render to screen
     SDL_Rect renderQuad = { x, y, textWidth, textHeight };
@@ -85,7 +85,7 @@ void Text::render( int x, int y, SDL_Rect* clip, double angle, SDL_Point* center
     }
 
     //Render to screen
-    SDL_RenderCopyEx( RENDERER, texture, clip, &renderQuad, angle, center, flip );
+    SDL_RenderCopyEx( renderer, texture, clip, &renderQuad, angle, center, flip );
 }
 
 int Text::getWidth() {
@@ -94,8 +94,4 @@ int Text::getWidth() {
 
 int Text::getHeight() {
 	return textHeight;
-}
-
-int Text::getID() {
-	return ID;
 }
