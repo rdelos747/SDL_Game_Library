@@ -47,6 +47,9 @@ public:
   // CAMERA
   void updateCamera(float newX, float newY);
 
+  // SCREEN
+  Size getScreenSize();
+
   // FONTS
   TTF_Font* addFont(std::string path, int size);
 
