@@ -100,10 +100,10 @@ bool Object::isCollidingWithObject(Object* object, float offsetX, float offsetY)
 	Size objectSpriteSize = ENGINE.getSpriteSize(object->sprite);
 
 	return
-		x + offsetX < object->x + objectSpriteSize.w &&
-		x + offsetX + spriteSize.w > object->x &&
-		y + offsetY < object->y + objectSpriteSize.h &&
-		y + offsetY + spriteSize.h > object->y;
+		x - center.x + offsetX < object->x - object->center.x + objectSpriteSize.w &&
+		x - center.x + offsetX + spriteSize.w > object->x - object->center.x &&
+		y - center.y + offsetY < object->y - object->center.y + objectSpriteSize.h &&
+		y - center.y + offsetY + spriteSize.h > object->y - object->center.y;
 }
 
 bool Object::isCollidingWithPoint(float pointX, float pointY) {
