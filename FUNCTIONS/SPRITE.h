@@ -9,9 +9,9 @@
 
 class Sprite {
 public:
-	Sprite();
+	Sprite(std::string newKey, std::string path);
 	~Sprite();
-	bool loadFromFile(SDL_Renderer* renderer, std::string path);
+	void loadFromFile(std::string path);
 
 	SDL_Texture* texture;
 
@@ -27,11 +27,10 @@ public:
 
 	int getWidth();
 	int getHeight();
-	int getID();
-	int setID(int newID);
+	std::string getKey();
 
 private:
-	int ID;
+	std::string key;
 	int spriteWidth;
 	int spriteHeight;
 };

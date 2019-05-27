@@ -96,8 +96,8 @@ void Engine::close() {
 	objects.clear();
 
 	printf("--deleting sprites: %lu\n", sprites.size());
-	for (int i = 0; i < sprites.size(); i++) {
-		delete sprites[i];
+	for(std::map<std::string, Sprite*>::iterator it = sprites.begin(); it != sprites.end(); it++) {
+		delete it->second;
 	}
 	sprites.clear();
 
@@ -245,16 +245,26 @@ Object* Engine::collisionAtPoint(float newX, float newY, int layer) {
 // S P R I T E S
 // ////////////////////////////////////////////////////////////////
 
-Sprite* Engine::addSprite(std::string path) {
-	Sprite* s = new Sprite;
-	if(!s->loadFromFile(renderer, path)) {
+Sprite* Engine::addSprite(std::string key, std::string path) {
+	Sprite* s = new Sprite(key, path);
+	if(s->texture == NULL) {
 		printf("Could not load sprite\n");
 		errorFound = 1;
 		return NULL;
 	} else {
-		s->setID(currentID++);
-		sprites.push_back(s);
+		sprites.insert(std::pair<std::string, Sprite*>(key, s));
 		return s;
+	}
+}
+
+void Engine::renderSprite(std::string key, int renderX, int renderY, int direction) {
+	// Sprite* sprite = sprites[key];
+	std::map<std::string, Sprite*>::iterator it = sprites.find(key);
+	if(it != sprites.end()) {
+		Sprite* sprite = it->second;
+		if (sprite->texture != NULL) {
+			sprite->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, direction, NULL);
+		}
 	}
 }
 

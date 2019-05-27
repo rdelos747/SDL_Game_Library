@@ -4,19 +4,19 @@
 
 #include "SPRITE.h"
 
-Sprite::Sprite() {
-	ID = -1;
+Sprite::Sprite(std::string newKey, std::string path) {
+	key = newKey;
 	texture = NULL;
 	spriteWidth = 0;
 	spriteHeight = 0;
+	loadFromFile(path);
 }
 
 Sprite::~Sprite() {
 	freeSprite();
-	ID = -1;
 }
 
-bool Sprite::loadFromFile(SDL_Renderer* renderer, std::string path) {
+void Sprite::loadFromFile(std::string path) {
 	//Get rid of preexisting texture
 	freeSprite();
 
@@ -32,7 +32,7 @@ bool Sprite::loadFromFile(SDL_Renderer* renderer, std::string path) {
 		SDL_SetColorKey(loadedSurface, SDL_TRUE, SDL_MapRGB(loadedSurface->format, 0, 0, 0));
 
 		//Create texture from surface pixels
-    newTexture = SDL_CreateTextureFromSurface(renderer, loadedSurface);
+    	newTexture = SDL_CreateTextureFromSurface(ENGINE.renderer, loadedSurface);
 		if (newTexture == NULL) {
 			printf("Unable to create texture from %s! SDL Error: %s\n", path.c_str(), SDL_GetError());
 		} else {
@@ -47,7 +47,6 @@ bool Sprite::loadFromFile(SDL_Renderer* renderer, std::string path) {
 
 	//Return success
 	texture = newTexture;
-	return texture != NULL;
 }
 
 void Sprite::freeSprite()
@@ -86,17 +85,6 @@ int Sprite::getHeight() {
 	return spriteHeight;
 }
 
-int Sprite::getID() {
-	return ID;
-}
-
-int Sprite::setID(int newID) {
-	if (ID == -1) {
-		ID = newID;
-	}
-	else {
-		printf("Sprite ID already set as %d\n", ID);
-	}
-
-	return ID;
+std::string Sprite::getKey() {
+	return key;
 }
