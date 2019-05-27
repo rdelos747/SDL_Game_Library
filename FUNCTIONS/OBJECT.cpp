@@ -128,6 +128,10 @@ void Object::hideSprite() {
 	visible = false;
 }
 
+Size Object::getSpriteSize() {
+	return ENGINE.getSpriteSize(sprite);
+}
+
 // /////////////////////////////////
 // TEXT FUNCTIONS (called by child)
 // ////////////////////////////////////////////////////////////////

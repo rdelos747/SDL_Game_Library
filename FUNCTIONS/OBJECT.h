@@ -13,6 +13,7 @@
 class Engine;
 class Text;
 class Sprite;
+struct Size;
 
 class Object {
 public:
@@ -38,6 +39,7 @@ public:
 	void setSprite(std::string key);
 	void showSprite();
 	void hideSprite();
+	Size getSpriteSize();
 
 	// text
 	void linkFont(TTF_Font* font);

@@ -12,6 +12,7 @@
 #include "OBJECT.h"
 #include "TIMER.h"
 #include "TEXT.h"
+#include "SIZE.h"
 
 #include <vector>
 #include <math.h>
@@ -41,6 +42,7 @@ public:
 
   // SPRITES
   void addSprite(std::string key, std::string path);
+  Size getSpriteSize(std::string key);
 
   // CAMERA
   void updateCamera(float newX, float newY);

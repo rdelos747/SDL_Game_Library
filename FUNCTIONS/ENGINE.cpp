@@ -228,6 +228,30 @@ int Engine::addObject(Object* newObject) {
 	return newObject->getID();
 }
 
+void Engine::renderObject(Object* object) {
+	if (object->visible == true) {
+		float renderX = object->x - object->center.x;
+		float renderY = object->y - object->center.y;
+
+		std::string spriteKey = object->getSprite();
+
+		if(spriteKey != "") {
+			std::map<std::string, Sprite*>::iterator it = sprites.find(spriteKey);
+			if(it != sprites.end()) {
+				Sprite* sprite = it->second;
+				if (sprite->texture != NULL) {
+					sprite->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, object->direction, NULL);
+				}
+			}
+		}
+
+		Text* text = object->getText();
+		if (text != NULL && text->texture != NULL && text->font != NULL) {
+			text->render(ENGINE.renderer, object->x - ENGINE.camera.x, object->y - ENGINE.camera.y, NULL, object->direction, NULL);
+		}
+	}	
+}
+
 Object* Engine::collisionAtPoint(float newX, float newY, int layer) {
 	Object* foundObject = NULL;
 	for (int i = 0; i < objects.size(); i++) {
@@ -255,32 +279,17 @@ void Engine::addSprite(std::string key, std::string path) {
 	}
 }
 
-void Engine::renderObject(Object* object) {
-	if (object->visible == true) {
-		float renderX = object->x - object->center.x;
-		float renderY = object->y - object->center.y;
-
-		std::string spriteKey = object->getSprite();
-
-		if(spriteKey != "") {
-			std::map<std::string, Sprite*>::iterator it = sprites.find(spriteKey);
-			if(it != sprites.end()) {
-				Sprite* sprite = it->second;
-				if (sprite->texture != NULL) {
-					sprite->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, object->direction, NULL);
-				}
-			}
-		}
-
-		Text* text = object->getText();
-		if (text != NULL && text->texture != NULL && text->font != NULL) {
-			text->render(ENGINE.renderer, object->x - ENGINE.camera.x, object->y - ENGINE.camera.y, NULL, object->direction, NULL);
+Size Engine::getSpriteSize(std::string key) {
+	Size s = {0, 0};
+	std::map<std::string, Sprite*>::iterator it = sprites.find(key);
+	if(it != sprites.end()) {
+		Sprite* sprite = it->second;
+		if (sprite->texture != NULL) {
+			s.w = sprite->getWidth();
+			s.h = sprite->getHeight();
 		}
 	}
-
-
-	// Sprite* sprite = sprites[key];
-	
+	return s;
 }
 
 // /////////////////////////////////
