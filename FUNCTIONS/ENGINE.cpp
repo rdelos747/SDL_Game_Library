@@ -260,9 +260,11 @@ Sprite* Engine::addSprite(std::string key, std::string path) {
 void Engine::renderSprite(std::string key, int renderX, int renderY, int direction) {
 	// Sprite* sprite = sprites[key];
 	std::map<std::string, Sprite*>::iterator it = sprites.find(key);
-	Sprite* sprite = it->second;
-	if (sprite->texture != NULL) {
-		sprite->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, direction, NULL);
+	if(it != sprites.end()) {
+		Sprite* sprite = it->second;
+		if (sprite->texture != NULL) {
+			sprite->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, direction, NULL);
+		}
 	}
 }
 

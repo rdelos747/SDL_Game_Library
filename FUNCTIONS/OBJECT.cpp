@@ -78,7 +78,9 @@ void Object::render() {
 		float renderX = x - center.x;
 		float renderY = y - center.y;
 
-		ENGINE.renderSprite(sprite, renderX, renderY, direction);
+		if(sprite != "") {
+			ENGINE.renderSprite(sprite, renderX, renderY, direction);
+		}
 
 		if (text != NULL) {
 			if (text->texture != NULL & text->font != NULL) {
