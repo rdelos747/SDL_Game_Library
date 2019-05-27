@@ -8,10 +8,10 @@
 // CONSTRUCTOR
 // ////////////////////////////////////////////////////////////////
 
-Object::Object(Engine* newEgPtr) {
+Object::Object(/*Engine* newEgPtr*/) {
 
 	// SET THE ENGINE
-	egPtr = newEgPtr;
+	//egPtr = newEgPtr;
 	// OBJECT VARS
 	destroy = false;
 	ID = -1;
@@ -49,7 +49,7 @@ Object::~Object() {
 		text = NULL;
 	}
 
-	egPtr = NULL;
+	//egPtr = NULL;
 }
 
 // /////////////////////////////////
@@ -83,12 +83,12 @@ void Object::render() {
 
 		if (activeSprite >= 0 && activeSprite < sprites.size()) {
 			if (sprites[activeSprite]->texture != NULL) {
-				sprites[activeSprite]->render(egPtr->renderer, renderX - egPtr->camera.x, renderY - egPtr->camera.y, NULL, direction, NULL);
+				sprites[activeSprite]->render(engine.renderer, renderX - engine.camera.x, renderY - engine.camera.y, NULL, direction, NULL);
 			}
 		}
 		if (text != NULL) {
 			if (text->texture != NULL & text->font != NULL) {
-				text->render(egPtr->renderer, x - egPtr->camera.x, y - egPtr->camera.y, NULL, direction, NULL);
+				text->render(engine.renderer, x - engine.camera.x, y - engine.camera.y, NULL, direction, NULL);
 			}
 		}
 	}
@@ -177,7 +177,7 @@ void Object::linkFont(TTF_Font* font) {
 	t->font = font;
 	if (t->font == NULL) {
 		printf( "Failed to load lazy font! SDL_ttf Error: %s\n", TTF_GetError() );
-    egPtr->setError(1);
+    engine.setError(1);
 	} else {
 		text = t;
 	}
@@ -186,14 +186,14 @@ void Object::linkFont(TTF_Font* font) {
 void Object::setText(std::string value, SDL_Color color) {
 	if (text == NULL) {
 		printf("Cannot set text value, object->text = NULL. Must first create text item with setTextFont()\n");
-		egPtr->setError(1);
+		engine.setError(1);
 	} else if (text->font == NULL) {
 		printf("Cannot set text value, object->text->font = NULL. Must first create text item with setTextFont()\n");
-		egPtr->setError(1);
+		engine.setError(1);
 	} else {
-		if (!text->loadFromRenderedText(egPtr->renderer, value, color)) {
+		if (!text->loadFromRenderedText(engine.renderer, value, color)) {
 			printf( "Failed to render text texture!\n" );
-			egPtr->setError(1);
+			engine.setError(1);
 		}
 	}
 }
@@ -201,14 +201,14 @@ void Object::setText(std::string value, SDL_Color color) {
 void Object::setText(int value, SDL_Color color) {
 	if (text == NULL) {
 		printf("Cannot set text value, object->text = NULL. Must first create text item with setTextFont()\n");
-		egPtr->setError(1);
+		engine.setError(1);
 	} else if (text->font == NULL) {
 		printf("Cannot set text value, object->text->font = NULL. Must first create text item with setTextFont()\n");
-		egPtr->setError(1);
+		engine.setError(1);
 	} else {
-		if (!text->loadFromRenderedText(egPtr->renderer, std::to_string(value), color)) {
+		if (!text->loadFromRenderedText(engine.renderer, std::to_string(value), color)) {
 			printf( "Failed to render text texture!\n" );
-			egPtr->setError(1);
+			engine.setError(1);
 		}
 	}
 }

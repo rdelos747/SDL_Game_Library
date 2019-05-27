@@ -82,6 +82,8 @@ private:
   Text* dataText;
 };
 
+extern Engine engine;
+
 #endif
 
 // // /////////////////////////////////
