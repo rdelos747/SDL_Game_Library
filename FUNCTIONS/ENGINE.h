@@ -40,7 +40,7 @@ public:
   Object* collisionAtPoint(float newX, float newY, int layer);
 
   // SPRITES
-  Sprite* addSprite(std::string key, std::string path);
+  void addSprite(std::string key, std::string path);
 
   // CAMERA
   void updateCamera(float newX, float newY);

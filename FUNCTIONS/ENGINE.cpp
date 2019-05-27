@@ -245,15 +245,13 @@ Object* Engine::collisionAtPoint(float newX, float newY, int layer) {
 // S P R I T E S
 // ////////////////////////////////////////////////////////////////
 
-Sprite* Engine::addSprite(std::string key, std::string path) {
+void Engine::addSprite(std::string key, std::string path) {
 	Sprite* s = new Sprite(key, path);
 	if(s->texture == NULL) {
 		printf("Could not load sprite\n");
 		errorFound = 1;
-		return NULL;
 	} else {
 		sprites.insert(std::pair<std::string, Sprite*>(key, s));
-		return s;
 	}
 }
 
