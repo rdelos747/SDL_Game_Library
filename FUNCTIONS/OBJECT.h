@@ -34,7 +34,6 @@ public:
 	
 	// collision
 	int getCollisionLayer();
-	bool isCollidingWithPoint(float pointX, float pointY);
 	bool isCollidingWithObject(Object* object, float offsetX = 0, float offsetY = 0);
 
 	// sprites

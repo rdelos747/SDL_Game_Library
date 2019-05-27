@@ -263,17 +263,12 @@ Object* Engine::collisionAtOffset(Object* object, float offsetX, float offsetY, 
 	return foundObject;
 }
 
-Object* Engine::collisionAtPoint(float newX, float newY, int layer) {
-	Object* foundObject = NULL;
-	for (int i = 0; i < objects.size(); i++) {
-		if (objects[i]->getCollisionLayer() == layer && objects[i]->visible == true) {
-			if (objects[i]->isCollidingWithPoint(newX, newY) == true) {
-				//printf("collide\n");
-				foundObject = objects[i];
-			}
-		}
-	}
-	return foundObject;
+bool Engine::pointInRect(float pointX, float pointY, float rectX, float rectY, float rectW, float rectH) {
+	return
+		pointX >= rectX &&
+		pointX <= rectX + rectW &&
+		pointY >= rectY &&
+		pointY <= rectY + rectH;
 }
 
 // /////////////////////////////////

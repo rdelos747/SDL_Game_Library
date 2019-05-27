@@ -94,30 +94,14 @@ int Object::getCollisionLayer() {
 }
 
 bool Object::isCollidingWithObject(Object* object, float offsetX, float offsetY) {
-	// Just doing rect for now
-
-	Size spriteSize = ENGINE.getSpriteSize(sprite);
 	Size objectSpriteSize = ENGINE.getSpriteSize(object->sprite);
+	Size spriteSize = ENGINE.getSpriteSize(sprite);
 
 	return
 		x - center.x + offsetX < object->x - object->center.x + objectSpriteSize.w &&
 		x - center.x + offsetX + spriteSize.w > object->x - object->center.x &&
 		y - center.y + offsetY < object->y - object->center.y + objectSpriteSize.h &&
 		y - center.y + offsetY + spriteSize.h > object->y - object->center.y;
-}
-
-bool Object::isCollidingWithPoint(float pointX, float pointY) {
-	bool collisionDetected = false;
-	float myLeft = x - center.x;
-	float myRight = x + center.x;
-	float myTop = y - center.y;
-	float myBottom = y + center.y;
-
-	if (pointX >= myLeft && pointX <= myRight && pointY >= myTop && pointY <= myBottom) {
-		collisionDetected = true;
-	}
-	
-	return collisionDetected;
 }
 
 // /////////////////////////////////

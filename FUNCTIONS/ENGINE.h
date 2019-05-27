@@ -40,8 +40,10 @@ public:
 
   // OBJECTS
   int addObject(Object* newObject);
-  Object* collisionAtPoint(float newX, float newY, int layer);
+
+  // COLLISION
   Object* collisionAtOffset(Object* object, float offsetX, float offsetY, int layer);
+  bool pointInRect(float pointX, float pointY, float rectX, float rectY, float rectW, float rectH);
 
   // SPRITES
   void addSprite(std::string key, std::string path);
