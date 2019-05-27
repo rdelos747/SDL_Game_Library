@@ -6,6 +6,7 @@
 #include <SDL2/SDL_ttf.h>
 #include <stdio.h>
 #include <string>
+#include <map>
 
 #include "SPRITE.h"
 #include "OBJECT.h"
@@ -39,7 +40,7 @@ public:
   Object* collisionAtPoint(float newX, float newY, int layer);
 
   // SPRITES
-  Sprite* addSprite(std::string path);
+  Sprite* addSprite(std::string key, std::string path);
 
   // CAMERA
   void updateCamera(float newX, float newY);
@@ -75,7 +76,7 @@ private:
   int currentID;
   int errorFound;
   std::vector<Object*> objects;
-  std::vector<Sprite*> sprites;
+  std::map<std::string, Sprite*> sprites;
   std::vector<TTF_Font*> fonts;
 
   TTF_Font* dataFont;

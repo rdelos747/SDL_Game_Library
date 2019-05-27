@@ -96,9 +96,13 @@ void Engine::close() {
 	objects.clear();
 
 	printf("--deleting sprites: %lu\n", sprites.size());
-	for (int i = 0; i < sprites.size(); i++) {
-		delete sprites[i];
-	}
+	// for (int i = 0; i < sprites.size(); i++) {
+	// 	delete sprites[i];
+	// }
+	// for(map<std::string, Sprite*>::Iterator it = sprites.begin(); it != sprites.end(); it++) {
+		// delete sprites[i]
+	// }
+	
 	sprites.clear();
 
 	// clear data text
@@ -245,15 +249,14 @@ Object* Engine::collisionAtPoint(float newX, float newY, int layer) {
 // S P R I T E S
 // ////////////////////////////////////////////////////////////////
 
-Sprite* Engine::addSprite(std::string path) {
-	Sprite* s = new Sprite;
-	if(!s->loadFromFile(renderer, path)) {
+Sprite* Engine::addSprite(std::string key, std::string path) {
+	Sprite* s = new Sprite(key, path);
+	if(s->texture == NULL) {
 		printf("Could not load sprite\n");
 		errorFound = 1;
 		return NULL;
 	} else {
-		s->setID(currentID++);
-		sprites.push_back(s);
+		// sprites.insert(<std::string, std::string>key, s);
 		return s;
 	}
 }
