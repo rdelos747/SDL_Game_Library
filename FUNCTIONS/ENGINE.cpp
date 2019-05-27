@@ -252,11 +252,24 @@ void Engine::renderObject(Object* object) {
 	}	
 }
 
+Object* Engine::collisionAtOffset(Object* object, float offsetX, float offsetY, int layer) {
+	Object* foundObject = NULL;
+	for (int i = 0; i < objects.size(); i++) {
+		if (objects[i] != object && objects[i]->getCollisionLayer() == layer && objects[i]->visible == true) {
+			if (objects[i]->isCollidingWithObject(object, offsetX, offsetY) == true) {
+				//printf("collide\n");
+				foundObject = objects[i];
+			}
+		}
+	}
+	return foundObject;
+}
+
 Object* Engine::collisionAtPoint(float newX, float newY, int layer) {
 	Object* foundObject = NULL;
 	for (int i = 0; i < objects.size(); i++) {
 		if (objects[i]->getCollisionLayer() == layer && objects[i]->visible == true) {
-			if (objects[i]->pointInsideBounds(newX, newY) == true) {
+			if (objects[i]->isCollidingWithPoint(newX, newY) == true) {
 				//printf("collide\n");
 				foundObject = objects[i];
 			}

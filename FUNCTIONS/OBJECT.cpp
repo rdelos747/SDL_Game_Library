@@ -93,8 +93,20 @@ int Object::getCollisionLayer() {
 	return collisionLayer;
 }
 
+bool Object::isCollidingWithObject(Object* object, float offsetX, float offsetY) {
+	// Just doing rect for now
 
-bool Object::pointInsideBounds(float pointX, float pointY) {
+	Size spriteSize = ENGINE.getSpriteSize(sprite);
+	Size objectSpriteSize = ENGINE.getSpriteSize(object->sprite);
+
+	return
+		x + offsetX < object->x + objectSpriteSize.w &&
+		x + offsetX + spriteSize.w > object->x &&
+		y + offsetY < object->y + objectSpriteSize.h &&
+		y + offsetY + spriteSize.h > object->y;
+}
+
+bool Object::isCollidingWithPoint(float pointX, float pointY) {
 	bool collisionDetected = false;
 	float myLeft = x - center.x;
 	float myRight = x + center.x;
