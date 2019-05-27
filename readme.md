@@ -14,6 +14,7 @@ Note: this project is in the very early stages of development and will probably 
 
 - Include should just be `path/to/library/engine.h` instead of that mess with the functions directory.
 - Fix up this readme.. everything in the api reference is wrong :)
+- Stop rendering offscreen objects (add render padding around screen)
 
 ## SIMPLE EXAMPLE
 

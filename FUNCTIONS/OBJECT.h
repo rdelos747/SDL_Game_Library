@@ -31,8 +31,10 @@ public:
 	bool isDestroyed();
 	int getID();
 	int setID(int newID);
+	
+	// collision
 	int getCollisionLayer();
-	bool pointInsideBounds(float pointX, float pointY);
+	bool isCollidingWithObject(Object* object, float offsetX = 0, float offsetY = 0);
 
 	// sprites
 	std::string getSprite();
