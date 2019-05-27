@@ -316,7 +316,7 @@ bool Engine::chance(int max) {
 	return randInt(99) < max;
 }
 
-Engine engine;
+Engine ENGINE;
 
 // #include "FUNCTIONS.h"
 // //#include "SPRITE.h"

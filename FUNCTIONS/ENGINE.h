@@ -82,7 +82,7 @@ private:
   Text* dataText;
 };
 
-extern Engine engine;
+extern Engine ENGINE;
 
 #endif
 
