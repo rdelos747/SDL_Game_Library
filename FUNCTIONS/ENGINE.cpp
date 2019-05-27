@@ -7,9 +7,6 @@
 // ////////////////////////////////////////////////////////////////
 
 Engine::Engine() {
-	errorFound = 0;
-	gameRunning = true;
-	dataFont = NULL;
 	// screenWidth = -1;
 	// screenHeight = -1;
 	// levelWidth = -1;
@@ -22,6 +19,10 @@ Engine::Engine() {
 Engine::~Engine() {}
 
 bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, int newLevelHeight, int newFrameRate, bool showData) {
+	errorFound = 0;
+	gameRunning = true;
+	dataFont = NULL;
+
 	screenWidth = newScreenWidth;
 	screenHeight = newScreenHeight;
 	levelWidth = newLevelWidth;
@@ -314,6 +315,8 @@ int Engine::randIntRange(int min, int max) {
 bool Engine::chance(int max) {
 	return randInt(99) < max;
 }
+
+Engine engine;
 
 // #include "FUNCTIONS.h"
 // //#include "SPRITE.h"

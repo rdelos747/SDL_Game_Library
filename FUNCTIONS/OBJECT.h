@@ -17,7 +17,7 @@ class Sprite;
 class Object {
 public:
 	//functions that get overridden by child
-	Object(Engine* newParent);
+	Object();
 	virtual ~Object();
 	virtual void update();
 	virtual void keyDown(int k);
@@ -59,7 +59,7 @@ public:
 private:
 	bool destroy;
 	int ID;
-	Engine* egPtr;
+	//Engine* egPtr;
 	Text* text;
 	std::vector<Sprite*> sprites;
 	
