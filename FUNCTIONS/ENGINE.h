@@ -41,6 +41,7 @@ public:
 
   // SPRITES
   Sprite* addSprite(std::string key, std::string path);
+  void renderSprite(std::string key, int renderX, int renderY, int direction);
 
   // CAMERA
   void updateCamera(float newX, float newY);

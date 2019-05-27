@@ -37,9 +37,7 @@ public:
 	void render();
 
 	// sprites
-	void linkSprite(Sprite* newSprite);
-	void nextSprite();
-	void prevSprite();
+	void setSprite(std::string key);
 	void showSprite();
 	void hideSprite();
 
@@ -61,10 +59,7 @@ private:
 	int ID;
 	//Engine* egPtr;
 	Text* text;
-	std::vector<Sprite*> sprites;
-	
-protected:
-	int activeSprite;
+	std::string sprite;
 };
 
 #endif

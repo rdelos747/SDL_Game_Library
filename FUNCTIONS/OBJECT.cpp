@@ -23,7 +23,6 @@ Object::Object(/*Engine* newEgPtr*/) {
 	center.y = 0;
 
 	// SPRITE VARS
-	activeSprite = 0;
 	text = NULL;
 	visible = true;
 }
@@ -39,11 +38,10 @@ Object::~Object() {
 	ID = 0;
 	collisionLayer = 0;
 	direction = 0;
-	activeSprite = 0;
 	center.x = 0;
 	center.y = 0;
 	
-	sprites.clear();
+	// sprites.clear();
 	if (text != NULL) {
 		text->freeText();
 		text = NULL;
@@ -77,15 +75,11 @@ bool Object::isDestroyed() {
 // ////////////////////////////////////////////////////////////////
 void Object::render() {
 	if (visible == true) {
-		//int index = objects[i]->getActiveSprite();
 		float renderX = x - center.x;
 		float renderY = y - center.y;
 
-		if (activeSprite >= 0 && activeSprite < sprites.size()) {
-			if (sprites[activeSprite]->texture != NULL) {
-				sprites[activeSprite]->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, direction, NULL);
-			}
-		}
+		ENGINE.renderSprite(sprite, renderX, renderY, direction);
+
 		if (text != NULL) {
 			if (text->texture != NULL & text->font != NULL) {
 				text->render(ENGINE.renderer, x - ENGINE.camera.x, y - ENGINE.camera.y, NULL, direction, NULL);
@@ -136,8 +130,8 @@ bool Object::pointInsideBounds(float pointX, float pointY) {
 // SPRITE FUNCTIONS (called by child)
 // ////////////////////////////////////////////////////////////////
 
-void Object::linkSprite(Sprite* newSprite) {
-	sprites.push_back(newSprite);
+void Object::setSprite(std::string key) {
+	sprite = key;
 }
 
 void Object::showSprite() {
@@ -146,25 +140,6 @@ void Object::showSprite() {
 
 void Object::hideSprite() {
 	visible = false;
-}
-
-void Object::nextSprite() {
-	activeSprite++;
-	if (activeSprite >= sprites.size()) {
-		activeSprite = 0;
-	}
-}
-
-void Object::prevSprite() {
-	if (sprites.size() == 0) {
-		activeSprite = 0;
-	}
-	else {
-		activeSprite--;
-		if (activeSprite < 0) {
-			activeSprite = sprites.size() - 1;
-		}
-	}
 }
 
 // /////////////////////////////////

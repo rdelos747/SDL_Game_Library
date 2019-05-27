@@ -96,13 +96,9 @@ void Engine::close() {
 	objects.clear();
 
 	printf("--deleting sprites: %lu\n", sprites.size());
-	// for (int i = 0; i < sprites.size(); i++) {
-	// 	delete sprites[i];
-	// }
-	// for(map<std::string, Sprite*>::Iterator it = sprites.begin(); it != sprites.end(); it++) {
-		// delete sprites[i]
-	// }
-	
+	for(std::map<std::string, Sprite*>::iterator it = sprites.begin(); it != sprites.end(); it++) {
+		delete it->second;
+	}
 	sprites.clear();
 
 	// clear data text
@@ -256,8 +252,17 @@ Sprite* Engine::addSprite(std::string key, std::string path) {
 		errorFound = 1;
 		return NULL;
 	} else {
-		// sprites.insert(<std::string, std::string>key, s);
+		sprites.insert(std::pair<std::string, Sprite*>(key, s));
 		return s;
+	}
+}
+
+void Engine::renderSprite(std::string key, int renderX, int renderY, int direction) {
+	// Sprite* sprite = sprites[key];
+	std::map<std::string, Sprite*>::iterator it = sprites.find(key);
+	Sprite* sprite = it->second;
+	if (sprite->texture != NULL) {
+		sprite->render(ENGINE.renderer, renderX - ENGINE.camera.x, renderY - ENGINE.camera.y, NULL, direction, NULL);
 	}
 }
 

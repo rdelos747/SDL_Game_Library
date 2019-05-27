@@ -13,7 +13,6 @@ Sprite::Sprite(std::string newKey, std::string path) {
 }
 
 Sprite::~Sprite() {
-	printf("hi");
 	freeSprite();
 }
 
