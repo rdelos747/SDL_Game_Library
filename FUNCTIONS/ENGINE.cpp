@@ -125,24 +125,6 @@ void Engine::close() {
 	SDL_Quit();
 }
 
-bool Engine::keyDown(int k) {
-	for (int i = 0; i < keysDown.size(); i++) {
-		if (keysDown[i] == k) {
-			return true;
-		}
-	}
-	return false;
-}
-
-bool Engine::keyUp(int k) {
-	for (int i = 0; i < keysUp.size(); i++) {
-		if (keysUp[i] == k) {
-			return true;
-		}
-	}
-	return false;
-}
-
 bool Engine::render() {
 	if (gameRunning) {
 		capTimer.start();
@@ -179,12 +161,12 @@ bool Engine::render() {
 		// Perhaps check for errors here too?
 
 		// handle object destroy
-		for (int i = 0; i < objects.size(); i++) {
-			if (objects[i]->isDestroyed() == true) {
-				delete objects[i];
-				objects.erase(objects.begin() + i);
-			}
-		}
+		// for (int i = 0; i < objects.size(); i++) {
+		// 	if (objects[i]->isDestroyed() == true) {
+		// 		delete objects[i];
+		// 		objects.erase(objects.begin() + i);
+		// 	}
+		// }
 
 		setCamera();
 
@@ -230,6 +212,24 @@ void Engine::setError(int n) {
 	errorFound = n;
 }
 
+bool Engine::keyDown(int k) {
+	for (int i = 0; i < keysDown.size(); i++) {
+		if (keysDown[i] == k) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Engine::keyUp(int k) {
+	for (int i = 0; i < keysUp.size(); i++) {
+		if (keysUp[i] == k) {
+			return true;
+		}
+	}
+	return false;
+}
+
 // /////////////////////////////////
 // O B J E C T S
 // ////////////////////////////////////////////////////////////////
@@ -238,6 +238,19 @@ int Engine::addObject(Object* newObject) {
 	newObject->setID(currentID++);
 	objects.push_back(newObject);
 	return newObject->getID();
+}
+
+int Engine::destroyObject(Object* obj) {
+	int foundId = -1;
+	for (int i = 0; i < objects.size(); i++) {
+		if (objects[i] == obj) {
+			foundId = objects[i]->getID();
+			delete objects[i];
+			objects.erase(objects.begin() + i);
+			break;
+		}
+	}
+	return foundId;
 }
 
 void Engine::renderObject(Object* object) {

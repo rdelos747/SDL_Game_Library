@@ -35,13 +35,14 @@ public:
             int newFrameRate = 60,
             bool showData = true);
   void close();
-  bool keyDown(int k);
-  bool keyUp(int k);
   bool render();
   void setError(int n);
+  bool keyDown(int k);
+  bool keyUp(int k);
 
   // OBJECTS
   int addObject(Object* newObject);
+  int destroyObject(Object* obj);
 
   // COLLISION
   Object* collisionAtOffset(Object* object, float offsetX, float offsetY, int layer);

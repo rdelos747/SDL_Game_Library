@@ -27,8 +27,8 @@ public:
 	//not overridden, child must call Object::function()
 
 	// object
-	void selfDestroy();
-	bool isDestroyed();
+	// void selfDestroy();
+	// bool isDestroyed();
 	int getID();
 	int setID(int newID);
 	
@@ -58,7 +58,7 @@ public:
 	bool visible;
 
 private:
-	bool destroy;
+	//bool destroy;
 	int ID;
 	//Engine* egPtr;
 	Text* text;

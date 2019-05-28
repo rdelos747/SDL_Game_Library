@@ -13,7 +13,7 @@ Object::Object(/*Engine* newEgPtr*/) {
 	// SET THE ENGINE
 	//egPtr = newEgPtr;
 	// OBJECT VARS
-	destroy = false;
+	//destroy = false;
 	ID = -1;
 	collisionLayer = 0;
 	x = 0;
@@ -62,13 +62,13 @@ Object::~Object() {
 // DESTROY (called by child)
 // ////////////////////////////////////////////////////////////////
 
-void Object::selfDestroy() { 
-	destroy = true; //find a way to do this without just setting a flag.. maybe call Engine.destroy(self) or something...
-}
+// void Object::selfDestroy() { 
+// 	destroy = true; //find a way to do this without just setting a flag.. maybe call Engine.destroy(self) or something...
+// }
 
-bool Object::isDestroyed() {
-	return destroy;
-}
+// bool Object::isDestroyed() {
+// 	return destroy;
+// }
 
 // /////////////////////////////////
 // OBJECT FUNCTIONS (called by everyone)
