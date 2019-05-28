@@ -126,12 +126,6 @@ void Engine::close() {
 }
 
 bool Engine::keyDown(int k) {
-	// while(SDL_PollEvent(&gameEvent) != 0) {
-	// 	if (gameEvent.type == SDL_KEYDOWN && gameEvent.key.repeat == 0 && gameEvent.key.keysym.sym == k) {
-	// 		return true;
-	// 	}
-	// }
-	// return false;
 	for (int i = 0; i < keysDown.size(); i++) {
 		if (keysDown[i] == k) {
 			return true;
@@ -141,12 +135,6 @@ bool Engine::keyDown(int k) {
 }
 
 bool Engine::keyUp(int k) {
-	// while(SDL_PollEvent(&gameEvent) != 0) {
-	// 	if (gameEvent.type == SDL_KEYUP && gameEvent.key.repeat == 0 && gameEvent.key.keysym.sym == k) {
-	// 		return true;
-	// 	}
-	// }
-	// return false;
 	for (int i = 0; i < keysUp.size(); i++) {
 		if (keysUp[i] == k) {
 			return true;
@@ -171,14 +159,8 @@ bool Engine::render() {
 			}
 			// handle object keys
 			if (gameEvent.type == SDL_KEYDOWN && gameEvent.key.repeat == 0) {
-				// for (int i = 0; i < objects.size(); i++) {
-				// 	objects[i]->keyDown(gameEvent.key.keysym.sym);
-				// }
 				keysDown.push_back(gameEvent.key.keysym.sym);
 			} else if (gameEvent.type == SDL_KEYUP && gameEvent.key.repeat == 0) {
-				// for (int i = 0; i < objects.size(); i++) {
-				// 	objects[i]->keyUp(gameEvent.key.keysym.sym);
-				// }
 				keysUp.push_back(gameEvent.key.keysym.sym);
 			}
 		}
