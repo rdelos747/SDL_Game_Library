@@ -90,6 +90,8 @@ private:
   std::vector<Object*> objects;
   std::map<std::string, Sprite*> sprites;
   std::vector<TTF_Font*> fonts;
+  std::vector<int> keysDown;
+  std::vector<int> keysUp;
 
   TTF_Font* dataFont;
   Text* dataText;
