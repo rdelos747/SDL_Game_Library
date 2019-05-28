@@ -20,9 +20,9 @@ public:
 	//functions that get overridden by child
 	Object();
 	virtual ~Object();
-	virtual void update();
-	virtual void keyDown(int k);
-	virtual void keyUp(int k);
+	// virtual void update();
+	// virtual void keyDown(int k);
+	// virtual void keyUp(int k);
 
 	//not overridden, child must call Object::function()
 

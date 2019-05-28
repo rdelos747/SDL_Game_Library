@@ -35,7 +35,9 @@ public:
             int newFrameRate = 60,
             bool showData = true);
   void close();
-  bool update();
+  bool keyDown(int k);
+  bool keyUp(int k);
+  bool render();
   void setError(int n);
 
   // OBJECTS

@@ -54,9 +54,9 @@ Object::~Object() {
 // VIRTUAL OVERRIDES
 // ////////////////////////////////////////////////////////////////
 
-void Object::update() {}
-void Object::keyDown(int k) {}
-void Object::keyUp(int k) {}
+// void Object::update() {}
+// void Object::keyDown(int k) {}
+// void Object::keyUp(int k) {}
 
 // /////////////////////////////////
 // DESTROY (called by child)

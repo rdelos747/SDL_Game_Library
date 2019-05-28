@@ -125,7 +125,25 @@ void Engine::close() {
 	SDL_Quit();
 }
 
-bool Engine::update() {
+bool Engine::keyDown(int k) {
+	while(SDL_PollEvent(&gameEvent) != 0) {
+		if (gameEvent.type == SDL_KEYDOWN && gameEvent.key.repeat == 0 && gameEvent.key.keysym.sym == k) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Engine::keyUp(int k) {
+	while(SDL_PollEvent(&gameEvent) != 0) {
+		if (gameEvent.type == SDL_KEYUP && gameEvent.key.repeat == 0 && gameEvent.key.keysym.sym == k) {
+			return true;
+		}
+	}
+	return false;
+}
+
+bool Engine::render() {
 	if (gameRunning) {
 		capTimer.start();
 
@@ -138,15 +156,15 @@ bool Engine::update() {
 				gameRunning = false;
 			}
 			// handle object keys
-			if (gameEvent.type == SDL_KEYDOWN && gameEvent.key.repeat == 0) {
-				for (int i = 0; i < objects.size(); i++) {
-					objects[i]->keyDown(gameEvent.key.keysym.sym);
-				}
-			} else if (gameEvent.type == SDL_KEYUP && gameEvent.key.repeat == 0) {
-				for (int i = 0; i < objects.size(); i++) {
-					objects[i]->keyUp(gameEvent.key.keysym.sym);
-				}
-			}
+			// if (gameEvent.type == SDL_KEYDOWN && gameEvent.key.repeat == 0) {
+			// 	for (int i = 0; i < objects.size(); i++) {
+			// 		objects[i]->keyDown(gameEvent.key.keysym.sym);
+			// 	}
+			// } else if (gameEvent.type == SDL_KEYUP && gameEvent.key.repeat == 0) {
+			// 	for (int i = 0; i < objects.size(); i++) {
+			// 		objects[i]->keyUp(gameEvent.key.keysym.sym);
+			// 	}
+			// }
 		}
 
 		SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0xFF);
@@ -162,13 +180,11 @@ bool Engine::update() {
 
 		// Perhaps check for errors here too?
 
-		// handle object updates
+		// handle object destroy
 		for (int i = 0; i < objects.size(); i++) {
 			if (objects[i]->isDestroyed() == true) {
 				delete objects[i];
 				objects.erase(objects.begin() + i);
-			} else {
-				objects[i]->update();
 			}
 		}
 
