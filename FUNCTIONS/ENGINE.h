@@ -8,6 +8,8 @@
 #include <string>
 #include <map>
 
+#include "engineConfig.h"
+
 #include "SPRITE.h"
 #include "OBJECT.h"
 #include "TIMER.h"
@@ -28,12 +30,14 @@ public:
   // GENERAL
   Engine();
   ~Engine();
-  bool init(int newScreenWidth = 640, 
-            int newScreenHeight = 480, 
-            int newLevelWidth = 640, 
-            int newLevelHeight = 480,
-            int newFrameRate = 60,
-            bool showData = true);
+  bool init(engineConfig newConfig = engineConfig{
+    .screenWidth = 640,
+    .screenHeight = 480,
+    .levelWidth = 640,
+    .levelHeight = 480,
+    .frameRate = 60,
+    .showData = true
+  });
   void close();
   bool render();
   void setError(int n);

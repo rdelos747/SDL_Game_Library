@@ -4,28 +4,21 @@
 // G E N E R A L
 // ////////////////////////////////////////////////////////////////
 
-Engine::Engine() {
-	// screenWidth = -1;
-	// screenHeight = -1;
-	// levelWidth = -1;
-	// levelHeight = -1;
-	// camera = NULL;
-	// window = NULL;
-	// renderer = NULL;
-}
+Engine::Engine() {}
 
 Engine::~Engine() {}
 
-bool Engine::init(int newScreenWidth, int newScreenHeight, int newLevelWidth, int newLevelHeight, int newFrameRate, bool showData) {
+bool Engine::init(engineConfig newConfig) {
 	errorFound = 0;
 	gameRunning = true;
 	dataFont = NULL;
 
-	screenWidth = newScreenWidth;
-	screenHeight = newScreenHeight;
-	levelWidth = newLevelWidth;
-	levelHeight = newLevelHeight;
-	frameRate = newFrameRate;
+	screenWidth = newConfig.screenWidth;
+	screenHeight = newConfig.screenHeight;
+	levelWidth = newConfig.levelWidth;
+	levelHeight = newConfig.levelHeight;
+	frameRate = newConfig.frameRate;
+	
 	ticksPerFrame = 1000 / frameRate;
 	camera = {0, 0, screenWidth, screenHeight};
 	printf("ticks per frame %f\n", ticksPerFrame);

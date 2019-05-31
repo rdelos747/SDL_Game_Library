@@ -36,4 +36,4 @@ timer.o: FUNCTIONS/timer.cpp FUNCTIONS/timer.h
 	$(CXX) $(CXXFLAGS) $< -o $@
 
 clean:
-	rm *.o && rm *.a && rm $(EXE)
+	rm *.o && rm *.a
