@@ -2,3 +2,4 @@
 main.cpp
 *.a
 .vscode/
+.ds_store

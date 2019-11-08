@@ -25,19 +25,19 @@ class Object;
 class Sprite;
 class Text;
 
-class Engine {
+class Engine
+{
 public:
   // GENERAL
   Engine();
   ~Engine();
   bool init(engineConfig newConfig = engineConfig{
-    .screenWidth = 640,
-    .screenHeight = 480,
-    .levelWidth = 640,
-    .levelHeight = 480,
-    .frameRate = 60,
-    .showData = true
-  });
+                .screenWidth = 640,
+                .screenHeight = 480,
+                .levelWidth = 640,
+                .levelHeight = 480,
+                .frameRate = 60,
+                .showData = true});
   void close();
   bool render();
   void setError(int n);
@@ -45,11 +45,11 @@ public:
   bool keyUp(int k);
 
   // OBJECTS
-  int addObject(Object* newObject);
-  int destroyObject(Object* obj);
+  int addObject(Object *newObject);
+  int destroyObject(Object *obj);
 
   // COLLISION
-  Object* collisionAtOffset(Object* object, float offsetX, float offsetY, int layer);
+  Object *collisionAtOffset(Object *object, float offsetX, float offsetY, int layer);
   bool pointInRect(float pointX, float pointY, float rectX, float rectY, float rectW, float rectH);
 
   // SPRITES
@@ -63,14 +63,14 @@ public:
   Size getScreenSize();
 
   // FONTS
-  TTF_Font* addFont(std::string path, int size);
+  TTF_Font *addFont(std::string path, int size);
 
   // HELPERS
   int randInt(int max);
   int randIntRange(int min, int max);
   bool chance(int max);
 
-  SDL_Renderer* renderer;
+  SDL_Renderer *renderer;
   SDL_Rect camera;
 
 private:
@@ -82,7 +82,7 @@ private:
   int levelHeight;
   int frameRate;
   float ticksPerFrame;
-  SDL_Window* window;
+  SDL_Window *window;
   SDL_Event gameEvent;
 
   Timer fpsTimer;
@@ -92,16 +92,16 @@ private:
   bool gameRunning;
   int currentID;
   int errorFound;
-  std::vector<Object*> objects;
-  std::map<std::string, Sprite*> sprites;
-  std::vector<TTF_Font*> fonts;
+  std::vector<Object *> objects;
+  std::map<std::string, Sprite *> sprites;
+  std::vector<TTF_Font *> fonts;
   std::vector<int> keysDown;
   std::vector<int> keysUp;
 
-  TTF_Font* dataFont;
-  Text* dataText;
-  
-  void renderObject(Object* object);
+  TTF_Font *dataFont;
+  Text *dataText;
+
+  void renderObject(Object *object);
 };
 
 extern Engine ENGINE;
